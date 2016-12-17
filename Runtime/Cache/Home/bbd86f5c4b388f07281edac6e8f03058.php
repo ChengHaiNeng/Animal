@@ -110,8 +110,8 @@ body{
             <div class="row row-centered">
                 <div class="well col-md-6 col-centered">
                     <h2 style="text-align:center">欢迎注册</h2>
-					<span style="color:red">此为用户提示错误页面</span>
-                    <form:form action="/login" method="post" role="form">
+					
+                    <form action="<?php echo U('User/register');?>" method="post" role="form">
                         <div class="input-group input-group-md">
                             <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入用户名称"/>
@@ -153,7 +153,7 @@ body{
 						</div>
                         <br/>
                         <button type="submit" class="btn btn-success btn-block">登录</button>
-                    </form:form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -204,6 +204,6 @@ body{
     </div>
     <div class="am_info_line">Copyright(c)2016 <span>nongmushow</span> All Rights Reserved</div>
 </footer>
-<script src="js/petshow.js"></script>
+<script src="/Public/js/petshow.js"></script>
 </body>
 </html>

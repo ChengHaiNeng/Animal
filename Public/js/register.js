@@ -13,7 +13,7 @@ $(function(){
 	//用户名验证
 	$('#userid').blur(function(){
 		//查询用户名是否合法
-		var patt = /^\d{3,11}$/;
+		var patt = /^\w{3,11}$/;
 		if(!patt.test(this.value)){
 			$('#errUid').html('用户名请在3到11位之间哦');
 		}else{		
@@ -30,9 +30,10 @@ $(function(){
 		}
 	});
 
+
 	//验证password是否合法
 	$('#password').blur(function(){
-		var patt = /^\d{3,11}$/;
+		var patt = /^\w{3,11}$/;
 		if(!patt.test(this.value)){
 			$('#errPass').html('密码请在3到11位之间哦');
 		}else{
@@ -42,7 +43,7 @@ $(function(){
 
 	//验证两次输入密码是否一致
 	$('#rePassword').blur(function(){
-		var password = $('#password').value;
+		var password = $('#password').val();
 		if(password != this.value){
 			$('#errPass2').html('两次密码输入不一致');
 		}else{
@@ -101,13 +102,15 @@ $(function(){
 		}else{		
 		//利用Ajax实现：验证码是否正确
 			var url = '/index.php/Home/User/checkVerify/verifyCode/'+this.value;
-			/*alert(url);*/		
+			/*alert(url);	*/	
 			$.get(url,function(res){
-				if(res == 1){
-					$('#errUid').html('验证码正确');
+
+				if(res.indexOf('rue') >=0){
+					$('#errVer').html('验证码正确');
 				}else{
-					$('#errUid').html('验证码错误');
+					$('#errVer').html('验证码错误');
 				}
+				console.log(res);
 			});
 		}
 	});

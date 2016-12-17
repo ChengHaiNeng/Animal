@@ -12,18 +12,16 @@ $(function(){
 	//用户名验证
 	$('#userid').blur(function(){
 		//查询用户名是否合法
-		var patt = /^\d{3,11}$/;
+		var patt = /^\w{3,11}$/;
 		if(!patt.test(this.value)){
-			$('#errUid').html('用户名请在3到11位之间哦');
-		}else{		
-			$('#errUid').html('');
-		}
-	});
+			$('#errUid').html('用户名请在3到11位之间哦'); }
+		});
+
 
 
 	//验证password是否合法
 	$('#password').blur(function(){
-		var patt = /^\d{3,11}$/;
+		var patt = /^\w{3,11}$/;
 		if(!patt.test(this.value)){
 			$('#errPass').html('密码请在3到11位之间哦');
 		}else{

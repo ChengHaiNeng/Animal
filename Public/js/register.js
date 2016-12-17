@@ -1,7 +1,5 @@
 
 $(function(){
-
-
 	//点击刷新验证码
 	var verifyUrl = $('#verifyImg').attr('src');
 	var verifyUrl = verifyUrl.substring(0, 27);
@@ -114,6 +112,4 @@ $(function(){
 			});
 		}
 	});
-
-
 });

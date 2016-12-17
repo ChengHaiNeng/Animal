@@ -12,7 +12,7 @@
     <script src="__PUBLIC__/js/jquery.min.js"></script>
     <script src="__PUBLIC__/js/amazeui.min.js"></script>
     <script src="__PUBLIC__/js/amazeui.lazyload.min.js"></script>
-    <script src="__PUBLIC__/Js/login.js"></script>
+    <script src="__PUBLIC__/js/login.js"></script>
 
 
 </head>
@@ -107,7 +107,7 @@ body{
             <div class="row row-centered">
                 <div class="well col-md-6 col-centered">
                     <h2 style="text-align:center">欢迎登录</h2>
-                    <form:form action="/login" method="post" role="form">
+                    <form action="{:U('User/login')}" method="post" role="form">
                         <div class="input-group input-group-md">
                             <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入用户ID"/>
@@ -129,7 +129,7 @@ body{
 						</div>
                         <br/>
                         <button type="submit" class="btn btn-success btn-block">登录</button>
-                    </form:form>
+                    </form>
                 </div>
             </div>
         </div>

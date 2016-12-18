@@ -102,11 +102,11 @@ $(function(){
 			var url = '/index.php/Home/User/checkVerify/verifyCode/'+this.value;
 			/*alert(url);	*/	
 			$.get(url,function(res){
-
+				//alert(res);
 				if(res.indexOf('rue') >=0){
 					$('#errVer').html('验证码正确');
 				}else{
-					$('#errVer').html('验证码错误');
+					$('#errVer').html('验证码错误,请刷新验证码');
 				}
 			});
 		}

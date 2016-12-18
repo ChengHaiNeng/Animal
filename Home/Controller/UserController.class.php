@@ -4,6 +4,8 @@ use Think\Controller;
 use Think\Verify;
 class UserController extends Controller{
 	//用户登陆
+	//
+	static $isVerify = 0;
 	public function Login(){
 		if(empty($_POST)){
 			$this->display();
@@ -47,11 +49,12 @@ class UserController extends Controller{
 			$errArr = [];
 			
 			//判断验证码是否正确
-			/*$Verify = new \Think\Verify();
-			$rs = $Verify->check($verifyCode);
-			if($rs == ){
-				$errArr['verifyCode'] = "验证码错误";
-			}*/
+			
+			if($this->$isVerify == 0){
+				$errArr['verifyCode'] = "验证码错误";				
+			}else{
+				$this->$isVerify == 0;			
+			}
 
 			//判断用户名是否合法，不合法告知原因，并跳转至登录页
 			$patt = '/^\w{3,11}$/';	
@@ -205,12 +208,25 @@ class UserController extends Controller{
 		}
 	}
 
-
 	//验证码是否正确
+	static $veri = '';
 	public function checkVerify(){
 		$Verify = new \Think\Verify();
-		$verifyCode = $_GET['verifyCode'];
+		$verifyCode = $_GET['verifyCode'];	
+		if ($_GET['verifyCode']&& $_GET['verifyCode']==$this->$veri){
+			$rs = "true";
+			echo $rs;			
+		}
+		$this->$veri = $verifyCode;
+		//echo $this->$veri;
+		//exit();
+		$this->$veri = "";
 		$rs = $Verify->check($verifyCode);
+
+		if($rs){
+			$this->$veri = $verifyCode;
+			$this->$isVerify = 1;
+		}
 		$rs = json_encode($rs);
 		var_dump($rs);		
 	}

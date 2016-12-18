@@ -111,7 +111,8 @@ body{
                 <div class="well col-md-6 col-centered">
                     <h2 style="text-align:center">欢迎注册</h2>
 					
-                    <form id="formReg" action="<?php echo U('User/register');?>" method="post" role="form">
+                    <!-- <form id="formReg" action="<?php echo U('User/register');?>" method="post" role="form"> -->
+                     <form id="formReg"  role="form">
                         <div class="input-group input-group-md">
                             <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入用户名称"/>
@@ -152,7 +153,7 @@ body{
                             <div id = "errVer"></div>
 						</div>
                         <br/>
-                        <button type="submit" class="btn btn-success btn-block">登录</button>
+                        <button type="button" id="submits" class="btn btn-success btn-block">登录</button>
                     </form>
                 </div>
             </div>

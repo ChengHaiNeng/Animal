@@ -3,7 +3,6 @@ namespace Home\Controller;
 use Think\Controller;
 use Think\Verify;
 class UserController extends Controller{
-
 	//用户登陆
 	public function Login(){
 		if(empty($_POST)){
@@ -15,13 +14,14 @@ class UserController extends Controller{
 			$where = array('username'=>"$username");
 			$user = $userModel->where($where)->find();
 			if($user['password']==md5($password.C('salt'))){
-				cookie('username',md5(C('salt').$username),3600*24*7);
+				cookie('username',/*md5(C('salt').$*/$user['id']/*)*/,3600*24*7);
 				//进入到用户中心
 				//$this->redirect('Home/Index/index');			
 			}else{
+				$this->redirect('Home/User/login');
 				//返回登录页
-				/*$this->redirect('Home/User/login', array('errtype'=>1), 1,'用户名或密码错误');
-					exit();*/
+				//$this->redirect('Home/User/login', array('errtype'=>1), 1,'用户名或密码错误');
+					exit();
 					//var_dump($user);
 					//echo md5(C('salt').$password);
 			}
@@ -34,67 +34,106 @@ class UserController extends Controller{
 		if(empty($_POST)){
 			$this->display();
 		}else{
-			$username = $_POST['userid'];
-			/*echo $username;
-			exit();*/
+			$username = $_POST['username'];
 			$password = $_POST['password'];
+
 			$rePassword = $_POST['rePassword'];
 			$email = $_POST['email'];
 			$mobile = $_POST['mobile'];
+			$verifyCode = $_POST['verifyCode'];
+			// var_dump($_POST);
+			//用一个数组记录错误类型
+			/*echo 1;*/
+			$errArr = [];
 			
+			//判断验证码是否正确
+			/*$Verify = new \Think\Verify();
+			$rs = $Verify->check($verifyCode);
+			if($rs == ){
+				$errArr['verifyCode'] = "验证码错误";
+			}*/
+
 			//判断用户名是否合法，不合法告知原因，并跳转至登录页
-			$patt = "/^\w{3,11}$/";	
+			$patt = '/^\w{3,11}$/';	
+			// echo $username;
+			// exit();
+			// var_dump(preg_match_all($patt,$_POST['username']));
+			// exit();
 			if(!preg_match($patt,$username)){
-				echo "用户名格式不对，请重试!<br>";
-				/*$this->redirect('Home/User/register', array('errtype'=>1), 1,'跳转中。。。');*/  
-				$this->redirect('Home/User/register');
-				exit();
-			}				
+				$errArr['errName'] = '用户名格式不对';
+			}
+
+
+			//判断用户名是否已存在
+			$userModel = M('user');
+			$where = array('username'=>"$username");
+			$isExist = $userModel->where($where)->find();
+			if($isExist){
+				$errArr['errName'] = '用户名已被占用';
+			}
+// var_dump($errArr);exit;
 			//判断密码是否合法，不合法告知原因，并跳转至登录页
 			if(!preg_match($patt,$password)){
-				$this->redirect('Home/User/register');
-				exit();
+				$errArr['errPass'] = '密码格式不对';
 			}	
 			//判断密码和确认密码是否相同
 			if($password!=$rePassword)	{
-				$this->redirect('Home/User/register');
-				exit();
+				$errArr['errRepass'] = '两次密码不一致';
 			}
 			//判断邮箱是否合法，不合法告知原因，并跳转至登录页
 			$patt = "/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/";
 			if(!preg_match($patt,$email)){
-				$this->redirect('Home/User/register');
-				exit();
+				$errArr['errEmail'] = 'email格式不对';
+			}
+
+			//判断邮箱是否已被注册
+			$where = array('mobile'=>"$mobile");
+			$isExist = $userModel->where($where)->find();
+			if($isExist){
+				$errArr['errEmail'] = 'email已被注册';
 			}	
 
 			////判断手机 是否合法，不合法告知原因，并跳转至登录页
 			$patt = "/^[1][3,4,5,8][0-9]{9}$/";
 			if(!preg_match($patt,$mobile)){
-				$this->redirect('Home/User/register');
-				exit();
+				$errArr['errMobile'] = '手机号格式不对';
 			}
 
-			//给password加密
-			$salt = C('salt');
-			$password = md5($password.$salt);
-			$userModel = D('user');			
-			if($userModel->create()){
-				$userModel->username = $username;
-				$userModel->password = $password;
-				$userModel->salt = $salt;
-				$userModel->lastime = time();
-				$userModel->regtime = time();
-				if($userModel->add()){
-					cookie('username',md5(C('salt').$username),3600*24*7);
-					//$this->redirect('Home/Index/index');
-					//跳转到用户中心
-				}
+			//判断手机是否已被注册
+			$where = array('mobile'=>"$mobile");
+			$isExist = $userModel->where($where)->find();
+			if($isExist){
+				$errArr['errMobile'] = '手机号已被注册';
+			}
+
+			
+
+			//如果错误数组 有内容，则返回内容，如果没有，直接进行处理数据
+			if(count($errArr)>0){
+				var_dump($errArr);
 			}else{
-				echo "注册失败，请重试";
-			}
-		}				
+				$salt = C('salt');
+				$password = md5($password.$salt);
+				$userModel = D('user');			
+				if($userModel->create()){
+					$userModel->username = $username;
+					$userModel->password = $password;
+					$userModel->salt = $salt;
+					$userModel->lastime = time();
+					$userModel->regtime = time();
+					if($userModel->add()){
+						//cookie('username',/*md5(C('salt').*/$username/*)*/,3600*24*7);						
+						/*$this->success('成功','register');*/
+						echo 111;
+					}else{
+						//注册失败的处理
+						echo 1;
+						//
+					}
+				}
+			}				
+		}
 	}
-
 
 	public function logout(){
 		cookie('username',null);
@@ -174,5 +213,11 @@ class UserController extends Controller{
 		$rs = $Verify->check($verifyCode);
 		$rs = json_encode($rs);
 		var_dump($rs);		
+	}
+
+
+	//注册提交表单时候的Ajax异步验证方法
+	public function checkSubmitReg(){
+		var_dump($_POST);
 	}
 }

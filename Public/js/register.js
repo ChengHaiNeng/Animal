@@ -108,8 +108,52 @@ $(function(){
 				}else{
 					$('#errVer').html('验证码错误');
 				}
-				console.log(res);
 			});
+		}
+	});
+
+
+	//用Ajax post方法去实现无页面刷新提交
+	$('#submits').click(function(){
+		var data = {
+			'username':$('#userid').val(),
+			'password':$('#password').val(),
+			'rePassword':$('#rePassword').val(),
+			'email':$('#email').val(),
+			'mobile':$('#mobile').val(),
+			'verifyCode':$('#verifyCode').val()
+		};
+		// console.log(data);
+		
+		var url = '/index.php/Home/User/register';
+		var flag = 0;
+		var params = {
+			'async':false,
+			'type' : 'post',
+			'data' : data,
+			'success':function(msg){
+				console.log(msg);
+				console.log(msg.length);
+				if(msg.length>13){
+					//返回的是一个错误数组，大于13说明数组里有值，说明前台填写
+					//没有错误
+					flag = 2;
+				}else if(msg.length>1){
+					//返回的是一个数字，长度大于1 ，说明此插入数据库成功
+					flag = 1;
+				}
+				//否则，说明插入数据库失败，注册失败
+			}
+		};
+		$.ajax(url,params);
+		if(flag == 2){
+			return false;
+			//return true;		
+		}else if(flag == 1){
+			location.href = "login"; 
+		}else{
+			//location.href = "http://www.baidu.com";
+			//注册失败的处理...
 		}
 	});
 });

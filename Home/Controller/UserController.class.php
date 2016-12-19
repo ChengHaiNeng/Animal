@@ -17,18 +17,20 @@ class UserController extends Controller{
 			$where = array('username'=>"$username");
 			$user = $userModel->where($where)->find();
 			if($user['password']==md5($password.C('salt'))){
-				cookie('username',/*md5(C('salt').$*/$user['id']/*)*/,3600*24*7);
+				cookie('userid',/*md5(C('salt').$*/$user['id']/*)*/,3600*24*7);
 				//进入到用户中心
-				//$this->redirect('Home/Index/index');			
+				//$this->redirect('Home/Index/index');
+				$this->assign('user',$user);	
+				$this->redirect('Home/User/pcenter');		
 			}else{
-				$this->redirect('Home/User/login');
+				//$this->redirect('Home/User/pcenter');
 				//返回登录页
 				//$this->redirect('Home/User/login', array('errtype'=>1), 1,'用户名或密码错误');
+				$this->redirect('Home/User/login','',1,'用户名或者密码错误，跳转回登录页面中..');
 					exit();
 					//var_dump($user);
 					//echo md5(C('salt').$password);
 			}
-
 		}
 	}
 
@@ -50,12 +52,14 @@ class UserController extends Controller{
 			$errArr = [];
 			
 			//判断验证码是否正确
+			$Verify = new \Think\Verify();
+			$Verify->reset = false;
+			$verify = $_POST['verifyCode'];			
+			$rs = $Verify->check($verify);
+			if(!$rs){
+				$errArr['errVeri'] = '验证码错误';
+			}
 			
-			/*if($this->$isVerify == 0){
-				$errArr['verifyCode'] = "验证码错误";				
-			}else{
-				$this->$isVerify == 0;			
-			}*/
 
 			//判断用户名是否合法，不合法告知原因，并跳转至登录页
 			$patt = '/^\w{3,11}$/';	
@@ -148,23 +152,100 @@ class UserController extends Controller{
 	}
 
 	//用户中心
-	public function Menter(){
+	public function pcenter(){
+		if(empty($_POST)){
+			//如果没有post则查询cookie
+			if(cookie('userid')){
+				//cookie存在
+				//跟userid查询数据库
+				$uid = cookie('userid');
+				$userModel = D('user');
+				$user = $userModel->find($uid);	
+				//assian到前台页面显示
+				$this->assign('user',$user);
+				$this->display();
+			}else{
+				$this->redirect('Home/User/login','',1,'用户名或者密码错误，跳转回登录页面中..');
+			}			
+		}		
+	}
 
+	//修改用户名称
+	public function changename(){
+		
+		$patt = '/^\w{3,11}$/';
+		if($_POST['jieshao']!=""&&preg_match($patt,$_POST['jieshao'])){
+			$uid = cookie('userid');
+			$userModel = D('user');
+			$data['username'] = $_POST['jieshao'];
+			$user = $userModel ->data($data)-> where('id='.$uid)->save();
+			if($user){
+				$this->redirect('Home/User/pcenter');
+			}else{
+				$this->redirect('Home/User/pcenter','',1,'用户名已被占用，跳转回用户中心..');
+			}
+
+		}else{
+			$this->redirect('Home/User/pcenter','',1,'用户名必须3到11位，跳转回用户中心..');
+		}
 	}
 
 	//修改密码
-	public function Changepwd(){
+	public function changepwd(){
+		$patt = '/^\w{3,11}$/';
+		if($_POST['password']!=""&&preg_match($patt,$_POST['password'])&&$_POST['password']==$_POST['repassword']){
+				$uid = cookie('userid');
+				$userModel = D('user');
+				$data['password'] = md5($_POST['password'].$salt);
+				$user = $userModel ->data($data)-> where('id='.$uid)->save();
+			if($user){
+				$this->redirect('Home/User/pcenter');
+			}else{
+				$this->redirect('Home/User/pcenter','',1,'修改密码失败..');
+			}
 
+		}else{
+			$this->redirect('Home/User/pcenter','',1,'密码必须3到11位，两次密码输入不能重复，跳转回用户中心..');
+		}
 	}
 
 	//修改手机号
-	public function Changemobile(){
+	public function changemobile(){
+		/*print_r($_POST);
+		exit();*/
+		$patt = "/^[1][3,4,5,8][0-9]{9}$/";
+		if($_POST['mobile']!=""&&preg_match($patt,$_POST['mobile'])){
+			$uid = cookie('userid');
+			$userModel = D('user');
+			$data['mobile'] = $_POST['mobile'];
+			$user = $userModel ->data($data)-> where('id='.$uid)->save();
+			if($user){
+				$this->redirect('Home/User/pcenter');
+			}else{
+				$this->redirect('Home/User/pcenter','',1,'手机号已被占用，跳转回用户中心..');
+			}
 
+		}else{
+			$this->redirect('Home/User/pcenter','',1,'手机格式不合法，跳转回用户中心..');
+		}
 	}
 
 	//修改邮箱
-	public function Changemail(){
-
+	public function changemail(){
+		$patt = "/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/";
+		if($_POST['email']!=""&&preg_match($patt,$_POST['email'])){
+			$uid = cookie('userid');
+			$userModel = D('user');
+			$data['email'] = $_POST['email'];
+			$user = $userModel ->data($data)-> where('id='.$uid)->save();
+			if($user){
+				$this->redirect('Home/User/pcenter');
+			}else{
+				$this->redirect('Home/User/pcenter','',1,'Email已被占用，跳转回用户中心..');
+			}
+		}else{
+			$this->redirect('Home/User/pcenter','',1,'Email格式不合法，跳转回用户中心..');
+		}
 	}
 
 
@@ -179,7 +260,7 @@ class UserController extends Controller{
 	//验证输入的用户名是否已存在
 	public function checkUidExist(){
 		$userModel = M('user');
-		$username =  $_GET['uid'];
+		$username =  I('uid');
 		$where = array('username'=>"$username");
 		$isExist = $userModel->where($where)->find();
 		if($isExist){
@@ -190,7 +271,7 @@ class UserController extends Controller{
 	//验证输入的邮箱是否已存在
 	public function checkEmailExist(){
 		$userModel = M('user');
-		$email =  $_GET['email'];
+		$email =  I('email');
 		$where = array('email'=>"$email");
 		$isExist = $userModel->where($where)->find();
 		if($isExist){
@@ -201,7 +282,7 @@ class UserController extends Controller{
 	//验证输入的电话是否已存在
 	public function checkMobExist(){
 		$userModel = M('user');
-		$mobile =  $_GET['mobile'];
+		$mobile =  I('mobile');
 		$where = array('mobile'=>"$mobile");
 		$isExist = $userModel->where($where)->find();
 		if($isExist){
@@ -214,31 +295,11 @@ class UserController extends Controller{
 	
 	public function checkVerify(){
 		$Verify = new \Think\Verify();
-			
-		if ($_GET['verifyCode']!=""&& $_GET['verifyCode']=="3333"){
-			$rs = "true";
-			var_dump("111111111");
-			var_dump(C('veri'));
-
+		$Verify->reset = false;
+		if($Verify->check(I('get.verifyCode'))){
+			echo 1;
 		}else{
-			$verify = $_GET['verifyCode'];
-			$rs = $Verify->check($verify);
-
-			if($rs){
-
-				C('veri',$verify);
-				
-			}
-			
-			$rs = json_encode($rs);
-			var_dump($rs);
+			echo  0;
 		}
-				
-	}
-
-
-	//注册提交表单时候的Ajax异步验证方法
-	public function checkSubmitReg(){
-		var_dump($_POST);
 	}
 }

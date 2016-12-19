@@ -6,22 +6,21 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="css/amazeui.min.css">
-    <link rel="stylesheet" href="css/petshow.css?6">
-    <link rel="stylesheet" href="css/animate.min.css">
-    <script src="js/jquery.min.js"></script>
-    <script src="js/amazeui.min.js"></script>
-    <script src="js/countUp.min.js"></script>
-    <script src="js/amazeui.lazyload.min.js"></script>
-
-
+    <link rel="stylesheet" href="__PUBLIC__/css/amazeui.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/css/petshow.css?6">
+    <link rel="stylesheet" href="__PUBLIC__/css/animate.min.css">
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/js/amazeui.min.js"></script>
+    <script src="__PUBLIC__/js/countUp.min.js"></script>
+    <script src="__PUBLIC__/js/amazeui.lazyload.min.js"></script>
+    <script src="__PUBLIC__/js/dianzan.js"></script>
 </head>
 <body>
 <header class="am-topbar am-topbar-fixed-top am-topbar-inverse">
     <div class="amz-container">
         <h1 class="am-topbar-brand">
             <a href="#" class="am-topbar-logo">
-                <img src="img/logo.png?1" alt="">
+                <img src="__PUBLIC__/img/logo.png?1" alt="">
             </a>
         </h1>
         <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
@@ -96,157 +95,22 @@
 <div class="am-g am-imglist">
     <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2
   am-avg-md-3 am-avg-lg-6 am-gallery-default">
+    <foreach name='data' item='v'>
         <li>
             <div class="am-gallery-item am_list_block">
                 <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
+                    <img class="am_img animated" src="__PUBLIC__/img/loading.gif"
                          data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
                          alt="远方 有一个地方 那里种有我们的梦想"/>
                 </a>
 
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
+                <div class="am_listimg_info"><span class="am-icon-heart"><a id="finger{$v['uid']}" href="javascript:void(0);" title="点我点我" onclick="finger({$v['uid']});">132</a></span><span
                         class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
             </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
+            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="__PUBLIC__/img/tx.jpg" alt=""></span><span
+            class="am_imglist_user_font">路见不平Eason吼</span></a>
         </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-        <li>
-            <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
-                    <img class="am_img animated" src="img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
-                         alt="远方 有一个地方 那里种有我们的梦想"/>
-                </a>
-
-                <div class="am_listimg_info"><span class="am-icon-heart"> 132</span><span
-                        class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
-
-            </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="img/tx.jpg" alt=""></span><span
-                    class="am_imglist_user_font">路见不平Eason吼</span></a>
-        </li>
-
+    </foreach>
     </ul>
 </div>
 <footer class="am_footer">
@@ -264,7 +128,7 @@
         <div class="am_footer_don">
             <span>农牧大家评</span>
             <dl>
-                <dt><img src="img/footdon.png?1" alt=""></dt>
+                <dt><img src="__PUBLIC__/img/footdon.png?1" alt=""></dt>
                 <dd>一起来分享我们的农牧人故事,农牧大家评。
                     <a href="###" class="footdon_pg ">
                         <div class="foot_d_pg am-icon-apple "> App store</div>
@@ -276,11 +140,11 @@
         </div>
 
         <div class="am_footer_erweima">
-            <div class="am_footer_weixin"><img src="img/wx.jpg" alt="">
+            <div class="am_footer_weixin"><img src="__PUBLIC__/img/wx.jpg" alt="">
 
                 <div class="am_footer_d_gzwx am-icon-weixin"> 关注微信</div>
             </div>
-            <div class="am_footer_ddon"><img src="img/wx.jpg" alt="">
+            <div class="am_footer_ddon"><img src="__PUBLIC__/img/wx.jpg" alt="">
 
                 <div class="am_footer_d_dxz am-icon-cloud-download"> 扫码下载</div>
             </div>
@@ -290,6 +154,6 @@
     </div>
     <div class="am_info_line">Copyright(c)2016 <span>nongmushow</span> All Rights Reserved</div>
 </footer>
-<script src="js/petshow.js"></script>
+<script src="__PUBLIC__/js/petshow.js"></script>
 </body>
 </html>

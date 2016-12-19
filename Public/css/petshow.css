@@ -20,7 +20,7 @@ ul,li,dl,dt,dd { margin: 0; padding: 0; list-style: none;}
 .am-topbar-inverse .am-topbar-nav>li>a:after { display: none;}
 .am-nav-pills>li+li { margin: 0;}
 .am-dropdown-content:before { display: none;}
-.am-gallery-bordered>li, .am-gallery-default>li, .am-gallery-imgbordered>li, .am-gallery-overlay>li { padding: 15px; padding-bottom: 10px;}
+.am-gallery-bordered>li, .am-gallery-default>li, .am-gallery-imgbordered>li, .am-gallery-overlay>li { padding: 12px; padding-bottom: 10px;}
 .am-dropdown-content:after { display: none;}
 .am-dropdown-content { background: #get_font_leftne; margin-top:0px; }
 .am-nav { font-size: 14px; margin-left: 20px;}
@@ -159,9 +159,9 @@ content: " ";display: block;margin-top: -7px;margin-left: -3px; }
 .am_tuya_comment_user_l img { border-radius: 50%; width: 33px; height: 33px;vertical-align:top; margin-right: 13px;}
 .am_tuya_comment_user_l span{color: #9c9c9c;font-weight:normal;}
 .am_tuya_comment_user_r { position: relative; float: right;height: 33px; line-height: 33px; font-size: 14px; color: #9c9c9c; display: none;}
-.am_tuya_comment_text { padding-left: 46px; font-size: 16px; color: #222;clear:both; padding-top: 10px;}
+.am_tuya_comment_text {font-size: 16px; color: #222;clear:both; padding-top: 10px;padding-right:1px}
 .am_tuya_comment:hover  .am_tuya_comment_user_r {display: block;}
-.am_tuya_r_info { max-width: 250px;}
+.am_tuya_r_info { max-width: 500px;height:30px}
 .am_tuya_r_info li { border-bottom: 1px solid #e0e0e0; line-height: 38px; height: 38px; font-size: 14px; color: #a1a1a1; -webkit-transition: all 0.4s ease;transition: all 0.4s ease;}
 .am_tuya_r_info li:hover { background: #eee; -webkit-transition: all 0.4s ease;transition: all 0.4s ease;}
 .am_tuya_r_info li :before { margin-left: 10px; font-size: 16px;}
@@ -428,7 +428,7 @@ opacity: 0.75;  width: 80px; height: 50px;float: left; }
 .am_albums  img {width: 100%;}
 .am_tuya_cai_ti { width: 100%;}
 .am_tuya_cai { width: 100%;}
-.am_tuya_comment { padding: 15px; padding-bottom: 25px;}
+.am_tuya_comment {padding-bottom: 15px;}
 .am_tuya_comment_text {}
 .am_tuya_comment:hover  .am_tuya_comment_user_r { display: none;}
 .am_tuya_comment { min-height: auto;}

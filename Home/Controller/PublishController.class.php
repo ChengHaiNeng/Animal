@@ -51,20 +51,26 @@ class PublishController extends Controller{
 		//连接数据库
 		$zanModel = D('Zan');
 		$_POST['time'] = time();
-		$_POST['uid'] = cookie('uid');
+		$_POST['uid'] = cookie('username');
 		$zanModel->create();
-		var_dump($_POST['uid']);
-		//exit();
 		//判断是否接受到数据
-		if (!empty($_POST['aid'])) {
-			$aid = $_POST['aid'];
+		if ($_POST['buid']) {
+			$buid = $_POST['buid'];
 			$uid = $_POST['uid'];
-			if ($zanModel->where("uid=$aid AND aid=$aid")->select()){
+			if ($zanModel->where("uid=$uid AND buid=$buid")->select()){
 				return;
 			}
-			
-			$zanModel->add();
-			echo 'ok';
 		}
+
+		if ($_POST['aid']) {
+			$aid = $_POST['aid'];
+			$uid = $_POST['uid'];
+			if ($zanModel->where("uid=$uid AND aid=$aid")->select()){
+				return;
+			}
+		}
+		//新的点赞 返回ok
+		$zanModel->add();
+		echo 'ok';
 	}
 }

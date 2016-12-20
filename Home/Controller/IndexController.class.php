@@ -12,18 +12,12 @@ class IndexController extends Controller {
     	//获取高级用户的获得赞的总数的数组
     	foreach ($guser as $k => $v) {
     		$uid = $v['uid'];
-    		$zan = $guserModle->table('Zan')->where("uid=$uid")->count();
+    		$zan = $guserModle->table('Zan')->where("buid=$uid")->count();
     		$zans['count'] =$zan;
     		$zansum[] = $zans['count'];
     	}
-    	print_r($zansum);
-    	print_r($guser);
-    	//exit();
-    	
     	$this->assign('data',$guser);
     	$this->assign('zan',$zansum);
     	$this->display();
     }
-
-    
 }

@@ -72,8 +72,8 @@ $('.am_imglist_user_font').each(
   prefix : '',
   suffix : ''
 };
-var banner_num = new CountUp("banner_num", 1200, 1210, 0, 5, options);
-banner_num.start();
+/*var banner_num = new CountUp("banner_num", '很多', '很多', 0, 0, options);
+banner_num.start();*/
 });
 
 //动画效果

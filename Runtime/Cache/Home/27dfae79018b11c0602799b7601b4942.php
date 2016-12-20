@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,21 +6,21 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="__PUBLIC__/css/amazeui.min.css">
-    <link rel="stylesheet" href="__PUBLIC__/css/petshow.css?6">
-	<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css">
+    <link rel="stylesheet" href="/Public/css/amazeui.min.css">
+    <link rel="stylesheet" href="/Public/css/petshow.css?6">
+	<link rel="stylesheet" href="/Public/css/animate.min.css">
 	<link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="__PUBLIC__/js/jquery.min.js"></script>
-    <script src="__PUBLIC__/js/amazeui.min.js"></script>
-    <script src="__PUBLIC__/js/gcenter.js"></script>
-    <script src="__PUBLIC__/js/amazeui.lazyload.min.js"></script>
+    <script src="/Public/js/jquery.min.js"></script>
+    <script src="/Public/js/amazeui.min.js"></script>
+    <script src="/Public/js/gcenter.js"></script>
+    <script src="/Public/js/amazeui.lazyload.min.js"></script>
 </head>
 <body>
 <header class="am-topbar am-topbar-fixed-top am-topbar-inverse">
     <div class="amz-container">
         <h1 class="am-topbar-brand">
             <a href="#" class="am-topbar-logo">
-                <img src="__PUBLIC__/img/logo.png?1" alt="">
+                <img src="/Public/img/logo.png?1" alt="">
             </a>
         </h1>
         <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
@@ -75,7 +75,7 @@
   <div style="margin-top:5px;width:70%;margin-right:15%;margin-left:15%;"  data-am-widget="intro"
        class="am-intro am-cf am-intro-default">
 		<h3><i class="am-icon-user-plus"></i>高级用户中心</h3>
-		<img id="imgoo" src="__PUBLIC__/img/a2.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
+		<img id="imgoo" src="/Public/img/a2.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
 		
 		<span id="jiushi6" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
  <i  class="am-icon-wrench"></i>修改头像
@@ -115,7 +115,7 @@
       <div class="am-tabs-bd">
           <div data-tab-panel-0 class="am-tab-panel am-active">
             <p style="font-size:20px;margin-top:15px;">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$data['self']}&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo ($data['self']); ?>&nbsp;&nbsp;
 			
 <span
   
@@ -149,18 +149,16 @@
 										<th><i class="am-icon-pencil"></i>编辑</th>
 										<th><i class="am-icon-close"></i>删除</th>
 									</tr>
-									<foreach name='article' item='art'>
-									<tr>
-										<td>{$art['id']}</td>
-										<td>{$art['title']}</td> 
+									<?php if(is_array($article)): foreach($article as $key=>$art): ?><tr>
+										<td><?php echo ($art['id']); ?></td>
+										<td><?php echo ($art['title']); ?></td> 
 										<td>{substr($art['content'],0,30).'......'}</td> 
 										<td>{date('Y-m-d H:i:s',$art['pubtime'])}</td>
 										<td><a href="" title="">编辑</a></td>
 										<td><a href="" title="">删除</a></td>
-									</tr>
-									</foreach>
+									</tr><?php endforeach; endif; ?>
 								  </table>
-								  {$page}
+								  <?php echo ($page); ?>
 								</div>
 		  </div>
           <div data-tab-panel-2 class="am-tab-panel ">
@@ -168,8 +166,7 @@
 										<ul id='imgadd8' data-am-widget="gallery" class="am-gallery am-avg-sm-2
 							  am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }" >
 
-                <foreach name='pic' item='pic'>
-								  <li>
+                <?php if(is_array($pic)): foreach($pic as $key=>$pic): ?><li>
 									<div class="am-gallery-item">
 										<a href="http://s.amazeui.org/media/i/demos/bing-1.jpg" class="">
 										  <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg"  alt="远方 有一个地方 那里种有我们的梦想"/>
@@ -178,19 +175,16 @@
 										</a>
 										<a href="">删除</a>
 									</div>
-								  </li>
-                </foreach>                
+								  </li><?php endforeach; endif; ?>                
                 
 							  </ul>
-							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin">
-                          <span>
-                                <if condition="$picsum gt 8">
-                                  <iclass="am-icon-refresh"></i>滑动获取更多图片
-                                  <else/>
+							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin"></i>---->
+							  <!-- <span>
+                                <?php if($picsum > 8): ?><iclass="am-icon-refresh"></i>滑动获取更多图片
+                                  <?php else: ?>
                                   <iclass="am-icon-refresh"></i>已无更多图片
-                                  <i class="am-icon-spinner am-icon-spin"></i>图片正在获取中......                 
-                                </if>
-                          </span> -->
+                                  <i class="am-icon-spinner am-icon-spin"></i>图片正在获取中......<?php endif; ?>
+                                </span> -->
 
 							  
 							  
@@ -203,7 +197,7 @@
 	       
 		<ul class="am-list-static">
 		
-		  <li><i class="am-icon-newspaper-o"></i>用户名称:{$userinfo['username']}  &nbsp;&nbsp;
+		  <li><i class="am-icon-newspaper-o"></i>用户名称:<?php echo ($userinfo['username']); ?>  &nbsp;&nbsp;
 		  <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
   <i id="jiushi1" class="am-icon-edit"></i>
 </span>
@@ -211,13 +205,13 @@
 		  
 		  
 		  <li><i class="am-icon-user"></i>真实姓名:刘能</li>
-		  <li><i class="am-icon-mobile"></i>手机号码:{$userinfo['mobile']}  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
+		  <li><i class="am-icon-mobile"></i>手机号码:<?php echo ($userinfo['mobile']); ?>  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
   <i id="jiushi2" class="am-icon-edit"></i>
 </span></li>
-		  <li><i class="am-icon-envelope-o"></i>邮箱:{$userinfo['email']}  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
+		  <li><i class="am-icon-envelope-o"></i>邮箱:<?php echo ($userinfo['email']); ?>  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
   <i id="jiushi3" class="am-icon-edit"></i>
 </span></li>
-		  <li><i class="am-icon-location-arrow"></i>居住地:{$data['address']}  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
+		  <li><i class="am-icon-location-arrow"></i>居住地:<?php echo ($data['address']); ?>  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
   <i id="jiushi4" class="am-icon-edit"></i>
 </span></li>
 <li><i class="am-icon-lock"></i>密码:*******  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
@@ -370,7 +364,7 @@
         <div class="am_footer_don">
             <span>农牧大家评</span>
             <dl>
-                <dt><img src="__PUBLIC__/img/footdon.png?1" alt=""></dt>
+                <dt><img src="/Public/img/footdon.png?1" alt=""></dt>
                 <dd>一起来分享我们的农牧人故事,农牧大家评。
                     <a href="###" class="footdon_pg ">
                         <div class="foot_d_pg am-icon-apple "> App store</div>
@@ -382,11 +376,11 @@
         </div>
 
         <div class="am_footer_erweima">
-            <div class="am_footer_weixin"><img src="__PUBLIC__/img/wx.jpg" alt="">
+            <div class="am_footer_weixin"><img src="/Public/img/wx.jpg" alt="">
 
                 <div class="am_footer_d_gzwx am-icon-weixin"> 关注微信</div>
             </div>
-            <div class="am_footer_ddon"><img src="__PUBLIC__/img/wx.jpg" alt="">
+            <div class="am_footer_ddon"><img src="/Public/img/wx.jpg" alt="">
 
                 <div class="am_footer_d_dxz am-icon-cloud-download"> 扫码下载</div>
             </div>
@@ -396,6 +390,6 @@
     </div>
     <div class="am_info_line">Copyright(c)2016 <span>nongmushow</span> All Rights Reserved</div>
 </footer>
-<script src="__PUBLIC__/js/petshow.js"></script>
+<script src="/Public/js/petshow.js"></script>
 </body>
 </html>

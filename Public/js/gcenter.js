@@ -1,3 +1,4 @@
+sign = null;
 function getpic(){
 	sign = 1;
 	/*$.post("/index.php/Home/Publish/dianzan",{ "buid": buid,"aid" : aid},function(data){
@@ -30,9 +31,33 @@ function getme(){
 function getarticle(){
 	sign = null;
 }
+
 $(window).scroll(function () {
 	if (sign == 1) {
 		if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-		alert('bottom!!');}
-	}
+      var pa = $('.am-gallery-item').length
+      $.post('/index.php/Home/Center/checkpic', {'pa': pa}, function(data) {
+        /*console.log(data);
+        alert(data.length);*/
+        for (var i = 0; i < data.length ; i++) {
+          console.log(data[i]['thumb']);
+          $('#imgadd8').append('<li><div class="am-gallery-item"><a href="http://s.amazeui.org/media/i/demos/bing-1.jpg" class=""><img src="http://s.amazeui.org/media/i/demos/bing-1.jpg"  alt="远方 有一个地方 那里种有我们的梦想"/><h3 class="am-gallery-title">远方 有一个地方 那里种有我们的梦想</h3><div class="am-gallery-desc">2375-09-26</div></a><a href="">删除</a></div></li>');
+        }
+      },'json');
+    };
+  }
 });
+
+
+                
+
+                /*'<li>
+                  <div class="am-gallery-item">
+                    <a href="http://s.amazeui.org/media/i/demos/bing-1.jpg" class="">
+                      <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg"  alt="远方 有一个地方 那里种有我们的梦想"/>
+                      <h3 class="am-gallery-title">远方 有一个地方 那里种有我们的梦想</h3>
+                      <div class="am-gallery-desc">2375-09-26</div>
+                    </a>
+                    <a href="">删除</a>
+                  </div>
+                </li>'*/

@@ -35,7 +35,7 @@
         <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
             <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li class="am-active">
-                    <a href="#">
+                    <a href="/">
                         首页
                     </a>
                 </li>
@@ -61,14 +61,24 @@
                 </li>
 				
             </ul>
-			<div class="am-topbar-right">
-                <a href="{:U('User/register')}" title=""><button class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</button></a>
+<if condition="$Think.cookie.username eq null ">
+	<div class="am-topbar-right">
+                <a href="{:U('Home/User/register')}"><span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</span></a>
             </div>
 
             <div class="am-topbar-right">
-                <a href="{:U('User/login')}" title=""><button class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-user"></span>登录</button></a>
+                <a href="{:U('Home/User/login')}"><span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-user"></span> 登录</span></a>
             </div>
-            
+   
+<else/>
+            <div class="am-topbar-right">
+                <span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><a href="{:U('Home/User/logout')}"><span class="am-icon-power-off"></span>退出</span></a>
+            </div>
+
+            <div class="am-topbar-right">
+                <a href="{:U('Home/User/pcenter')}"><span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-user"></span>欢迎您,<span style="color:orange;font-size:15px;" id="cookieusername">{$Think.cookie.username}</span></span></span></a>
+            </div>
+</if>
         </div>
     </div>
 </header>
@@ -96,22 +106,20 @@
 <div class="am-g am-imglist">
     <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2
   am-avg-md-3 am-avg-lg-6 am-gallery-default">
-  <php>$n = -1;</php>
     <foreach name='data' item='v'>
-    <php>$n += 1;</php>
         <li>
             <div class="am-gallery-item am_list_block">
-                <a href="###" class="am_img_bg">
+                <a href="{:U('Home/Guser/index/',array('uid'=>$v['uid']))}" class="am_img_bg">
                     <img class="am_img animated" src="__PUBLIC__/img/loading.gif"
                          data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
                          alt="远方 有一个地方 那里种有我们的梦想"/>
                 </a>
 
-                <div class="am_listimg_info"><a href="javascript:void(0);" title="点我点我" onclick="finger({$v['uid']});"><span class="am-icon-heart" id="finger{$v['uid']}" >{$zan[$n]}</span></a>
-                <span class="am-icon-comments"> 67</span><span class="am_imglist_time">15分钟前</span></div>
+                <div class="am_listimg_info"><a href="javascript:void(0);" title="点我点我" onclick="finger({$v['uid']});"><span class="am-icon-heart" id="finger{$v['uid']}" >{$v['zan']}</span></a>
+                <span class="am-icon-comments"> 67</span></div>
             </div>
-            <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="__PUBLIC__/img/tx.jpg" alt=""></span><span
-            class="am_imglist_user_font">路见不平Eason吼</span></a>
+            <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico"><img src="__PUBLIC__/img/tx.jpg" alt=""></span><span
+            class="am_imglist_user_font">{$v['username']}</span></a>
         </li>
     </foreach>
     </ul>

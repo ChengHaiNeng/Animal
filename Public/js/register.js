@@ -1,14 +1,30 @@
+//判断长度
+ function strlen(str) {
+        var len = 0;
+        for (var i = 0; i < str.length; i++) {
+            var c = str.charCodeAt(i);
+            //单字节加1 
+            if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+                len++;
+            }
+            else {
+                len += 1;
+            }
+        }
+        return len;
+    }
+
+
 function checkUser(oo){
-	var patt = /^\w{3,11}$/;
-		if(!patt.test(oo.value)){
-			$('#errUid').html('用户名请在3到11位之间哦');
-			return false;
+	if(strlen(oo.value)<3 || strlen(oo.value)>11){
+					$('#errVerName').html("<span style='color:red'>用户名请在3到11位之间哦</span>");
+					return false;
 		}else{		
 		//利用Ajax实现用户名查询是否存在
 			var url = '/Home/User/checkUidExist/uid/'+oo.value;
 			/*alert(url);*/		
 			$.get(url,function(res){
-				if(res == 1){
+				if(res){
 					$('#errUid').html('用户名已被占用');
 					return false;
 				}else{
@@ -137,6 +153,11 @@ $(function(){
 
 	//验证码
 	$('#verifyCode').blur(function(){
+		//查询验证码位数是否正确
+		checkCode(this);
+	});
+
+	$('#verifyCode').mouseout(function(){
 		//查询验证码位数是否正确
 		checkCode(this);
 	});

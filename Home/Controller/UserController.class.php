@@ -2,12 +2,24 @@
 namespace Home\Controller;
 use Think\Controller;
 use Think\Verify;
+use JWT;
 class UserController extends Controller{
 	//用户登陆
 	//
 	//static $isVerify = 0;
-	
 	public function Login(){
+
+		if(cookie('username')){
+			$userModel = D('user');
+			$username=cookie('username');
+			$user = $userModel->where($where)->find();
+			if($user['role']==0){
+					$this->redirect('Home/User/pcenter');
+				}else if($user['role']==1){
+					//如果role==1进入到高级用户中心
+					$this->redirect('Home/User/gcenter');
+				}
+		}
 		if(empty($_POST)){
 			$this->display();
 		}else{
@@ -17,29 +29,67 @@ class UserController extends Controller{
 			$where = array('username'=>"$username");
 			$user = $userModel->where($where)->find();
 			if($user['password']==md5($password.C('salt'))){
-				cookie('userid',/*md5(C('salt').$*/$user['id']/*)*/,3600*24*7);
-				//进入到用户中心
-				//$this->redirect('Home/Index/index');
-				$this->assign('user',$user);	
-				$this->redirect('Home/User/pcenter');		
+				cookie('username',/*md5(C('salt').$*/$username/*)*/,3600*24*7);
+				
+				//如果role==0进入到普通用户中心
+				if($user['role']==0){
+					$this->redirect('Home/User/pcenter');
+				}else if($user['role']==1){
+					//如果role==1进入到高级用户中心
+					$this->redirect('Home/User/gcenter');
+				}		
 			}else{
-				//$this->redirect('Home/User/pcenter');
+				$this->redirect('Home/User/login');
 				//返回登录页
 				//$this->redirect('Home/User/login', array('errtype'=>1), 1,'用户名或密码错误');
-				$this->redirect('Home/User/login','',1,'用户名或者密码错误，跳转回登录页面中..');
 					exit();
 					//var_dump($user);
 					//echo md5(C('salt').$password);
 			}
+
 		}
 	}
 
+
+	//验证用户名是否合法
+	public function checkUser($username){
+		//判断用户名是否合法，不合法告知原因，并跳转至登录页
+			$length=mb_strlen($username);
+			if($length<3 || $length>11){
+				$errArr['errName'] = '用户名必须在3到11位之间';
+				exit();
+			}
+
+
+			//判断用户名是否已存在
+			$userModel = M('user');
+			$where = array('username'=>"$username");
+			$isExist = $userModel->where($where)->find();
+			if($isExist){
+				$errArr['errName'] = '用户名已被占用';
+				exit();
+			}
+	}
+
+	
+
 	//用户注册
 	public function register(){
+		if(cookie('username')){
+			$userModel = D('user');
+			$username=cookie('username');
+			$user = $userModel->where($where)->find();
+			if($user['role']==0){
+					$this->redirect('Home/User/pcenter');
+				}else if($user['role']==1){
+					//如果role==1进入到高级用户中心
+					$this->redirect('Home/User/gcenter');
+				}
+		}
 		if(empty($_POST)){
 			$this->display();
 		}else{
-			$username = $_POST['username'];
+			$username = $_POST['userid'];
 			$password = $_POST['password'];
 
 			$rePassword = $_POST['rePassword'];
@@ -50,75 +100,65 @@ class UserController extends Controller{
 			//用一个数组记录错误类型
 			/*echo 1;*/
 			$errArr = [];
+
+//暂停止此项目,待上线在做验证码验证
+			// $Verify = new \Think\Verify();
+		 //          $Verify->reset = false;
+		 //          if(!$Verify->check(I('post.verifyCode'))){
+			// 		$errArr['errName'] = '验证码错误';
+					
+			// 		exit();
+			// 	}
+			$userModel=D('user');
+			$this->checkUser($username);
 			
-			//判断验证码是否正确
-			$Verify = new \Think\Verify();
-			$Verify->reset = false;
-			$verify = $_POST['verifyCode'];			
-			$rs = $Verify->check($verify);
-			if(!$rs){
-				$errArr['errVeri'] = '验证码错误';
-			}
-			
-
-			//判断用户名是否合法，不合法告知原因，并跳转至登录页
-			$patt = '/^\w{3,11}$/';	
-			// echo $username;
-			// exit();
-			// var_dump(preg_match_all($patt,$_POST['username']));
-			// exit();
-			if(!preg_match($patt,$username)){
-				$errArr['errName'] = '用户名格式不对';
-			}
-
-
-			//判断用户名是否已存在
-			$userModel = M('user');
-			$where = array('username'=>"$username");
-			$isExist = $userModel->where($where)->find();
-			if($isExist){
-				$errArr['errName'] = '用户名已被占用';
-			}
 // var_dump($errArr);exit;
+			$patt = '/^\w{3,11}$/';
 			//判断密码是否合法，不合法告知原因，并跳转至登录页
 			if(!preg_match($patt,$password)){
 				$errArr['errPass'] = '密码格式不对';
+				exit();
 			}	
 			//判断密码和确认密码是否相同
 			if($password!=$rePassword)	{
 				$errArr['errRepass'] = '两次密码不一致';
+				exit();
 			}
 			//判断邮箱是否合法，不合法告知原因，并跳转至登录页
 			$patt = "/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/";
 			if(!preg_match($patt,$email)){
 				$errArr['errEmail'] = 'email格式不对';
+				exit();
 			}
 
 			//判断邮箱是否已被注册
-			$where = array('mobile'=>"$mobile");
+			$where = array("email"=>"$email");
 			$isExist = $userModel->where($where)->find();
 			if($isExist){
-				$errArr['errEmail'] = 'email已被注册';
+				$errArr['errEmail'] = 'email已经被占用';
+				exit();
 			}	
 
 			////判断手机 是否合法，不合法告知原因，并跳转至登录页
 			$patt = "/^[1][3,4,5,8][0-9]{9}$/";
 			if(!preg_match($patt,$mobile)){
 				$errArr['errMobile'] = '手机号格式不对';
+				exit();
 			}
 
 			//判断手机是否已被注册
 			$where = array('mobile'=>"$mobile");
 			$isExist = $userModel->where($where)->find();
 			if($isExist){
-				$errArr['errMobile'] = '手机号已被注册';
+				$errArr['errMobile'] = '手机号码已被注册';
+				exit();
 			}
 
 			
 
 			//如果错误数组 有内容，则返回内容，如果没有，直接进行处理数据
 			if(count($errArr)>0){
-				var_dump($errArr);
+				$this->error(var_dump($errArr),'/Home/User/register',100);
 			}else{
 				$salt = C('salt');
 				$password = md5($password.$salt);
@@ -129,14 +169,10 @@ class UserController extends Controller{
 					$userModel->salt = $salt;
 					$userModel->lastime = time();
 					$userModel->regtime = time();
-					if($userModel->add()){
-						//cookie('username',/*md5(C('salt').*/$username/*)*/,3600*24*7);						
-						/*$this->success('成功','register');*/
-						echo 111;
+					if($userModel->add()){		
+						$this->success('注册成功','/Home/User/login');
 					}else{
-						//注册失败的处理
-						echo 1;
-						//
+						$this->error('注册失败','/Home/User/register');
 					}
 				}
 			}				
@@ -145,113 +181,192 @@ class UserController extends Controller{
 
 	public function logout(){
 		cookie('username',null);
+		$this->redirect('Home/User/login');
 	}
 	//管理员登陆
 	public function Manager(){
 
 	}
 
-	//用户中心
+	//普通用户中心
 	public function pcenter(){
 		if(empty($_POST)){
 			//如果没有post则查询cookie
-			if(cookie('userid')){
+			if(cookie('username')){
 				//cookie存在
 				//跟userid查询数据库
-				$uid = cookie('userid');
+				$username = cookie('username');
 				$userModel = D('user');
-				$user = $userModel->find($uid);	
+				$user = $userModel->where("username='$username'")->find();	
 				//assian到前台页面显示
-				$this->assign('user',$user);
-				$this->display();
+				//var_dump($user);
+				$user['regtime']=date("Y-m-d H:i:s",$user['regtime']);
+
+
+				if($user['role']==0){
+					//如果role==0进入到普通用户中心
+					$this->assign('user',$user);
+					$this->display('pcenter');
+				}else if($user['role']==1){
+					//如果role==1进入到高级用户中心
+					$this->redirect('Home/User/gcenter');
+				}
+
+
+				
 			}else{
-				$this->redirect('Home/User/login','',1,'用户名或者密码错误，跳转回登录页面中..');
+				$this->redirect('Home/User/login');
 			}			
 		}		
 	}
 
-	//修改用户名称
-	public function changename(){
-		
-		$patt = '/^\w{3,11}$/';
-		if($_POST['jieshao']!=""&&preg_match($patt,$_POST['jieshao'])){
-			$uid = cookie('userid');
-			$userModel = D('user');
-			$data['username'] = $_POST['jieshao'];
-			$user = $userModel ->data($data)-> where('id='.$uid)->save();
-			if($user){
-				$this->redirect('Home/User/pcenter');
-			}else{
-				$this->redirect('Home/User/pcenter','',1,'用户名已被占用，跳转回用户中心..');
+
+	//高级用户中心
+	public function gcenter(){
+		if(cookie('username')){
+		//cookie存在
+		//跟userid查询数据库
+		$username = cookie('username');
+		$userModel = D('user');
+		$user = $userModel->where("username='$username'")->find();
+		$zan = D('Zan')->where("buid=$user[id]")->count();
+
+		//获取文章且分页显示
+		$count=D('article')->where("uid=$user[id]")->count();
+		$Page= new \Think\Page($count,6);// 实例化分页类 
+		$Page -> setConfig('header','共%TOTAL_ROW%篇');
+		$Page -> setConfig('first','首页');
+		$Page -> setConfig('last','共%TOTAL_PAGE%页');
+		$Page -> setConfig('prev','上一页');
+		$Page -> setConfig('next','下一页');
+		$Page -> setConfig('link','indexpagenumb');//pagenumb 会替换成页码
+		$Page -> setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
+		$show= $Page->show();
+
+		$article=D('article')->field('id,title,pubtime,uid')->where("uid=$user[id]")->order('pubtime desc')->limit($Page->firstRow.','.$Page->listRows)->select();
+		foreach ($article as $key => $value) {
+			static $a=1;
+			$article[$key]['pubtime']=date('Y/m/d H:i:s',$value['pubtime']);
+			$p=I('get.p');
+			if($p==null){
+				$p=1;
 			}
+			$article[$key]['shunxu']=$a+($p-1)*6;
+			$a++;
+		}
+		
+		unset($a);
+		$this->assign('show',$show);
+		$this->assign('article',$article);
+		$this->assign('count',$count);
+		$this->assign('zan',$zan);
+		//assian到前台页面显示
+		//var_dump($user);
+		$user['regtime']=date("Y/m/d H:i:s",$user['regtime']);
+		
+				if($user['role']==0){
+							//如果role==0进入到普通用户中心
+							$this->redirect('Home/User/pcenter');
+				}else if($user['role']==1){
+							//如果role==1进入到高级用户中心
+							$guser=D('guser')->where("uid='$user[id]'")->find();
+							$this->assign('guser',$guser);
+							$this->assign('user',$user);
+							$this->display('gcenter');
+					}
 
 		}else{
-			$this->redirect('Home/User/pcenter','',1,'用户名必须3到11位，跳转回用户中心..');
+			$this->redirect('Home/User/login');
 		}
 	}
 
-	//修改密码
-	public function changepwd(){
-		$patt = '/^\w{3,11}$/';
-		if($_POST['password']!=""&&preg_match($patt,$_POST['password'])&&$_POST['password']==$_POST['repassword']){
-				$uid = cookie('userid');
-				$userModel = D('user');
-				$data['password'] = md5($_POST['password'].$salt);
-				$user = $userModel ->data($data)-> where('id='.$uid)->save();
-			if($user){
-				$this->redirect('Home/User/pcenter');
-			}else{
-				$this->redirect('Home/User/pcenter','',1,'修改密码失败..');
+
+	//修改用户名
+	public function updateUser(){
+	      $username=I('get.uid');
+	      $tname=I('get.tid');
+	      $this->checkUser($username);
+	      $userModel = D('user');
+	      $where = array('username'=>$tname);
+	      if($userModel->where($where)->save(array('username'=>"$username"))){
+	      	$arr=array();
+	      	$arr['username']=$username;
+	      	cookie('username',$username,7*24*3600);
+
+	      	echo json_encode($arr);
+	      }else{
+	      	echo  0;
+	      }
+	}
+
+	//验证自我介绍是否合法
+	public function checkIntro($intro){
+		$length=mb_strlen($intro);
+			if($length<10 || $length>30){
+				$errArr['errName'] = '自我介绍必须在10到30位之间';
+				exit();
+			}
+	}
+
+	//修改简介
+	public function updateIntro(){
+		$intro=I('post.intro');
+		$this->checkIntro($intro);
+		$username=cookie('username');
+		$userModle=D('user');
+		if ($userModle->where("username='$username'")->save($_POST)) {
+			echo 1;
+		}else{
+			echo 0;
+		}
+		
+	}
+
+
+	//申请成为高级用户
+	public function upg(){
+		//如果已经是高级用户
+		$cookiename=cookie('username');
+			$user=D('user')->where("username='$cookiename'")->find();
+			if($user['role']==1){
+				$this->redirect('Home/User/gcenter');
 			}
 
+		if(!IS_POST){
+			$this->display('shenhe');
 		}else{
-			$this->redirect('Home/User/pcenter','',1,'密码必须3到11位，两次密码输入不能重复，跳转回用户中心..');
+			$_POST['uid']=$user['id'];
+			if(D('guser')->add($_POST)){
+				if(D('user')->where("id='$user[id]'")->save(['role'=>1])){
+					$this->success('Home/User/gcenter');
+				}else{
+					$this->error('Home/User/shenhe');
+				}
+			}
 		}
+	}
+	
+
+	//修改密码
+	public function changePwd(){
+
 	}
 
 	//修改手机号
-	public function changemobile(){
-		/*print_r($_POST);
-		exit();*/
-		$patt = "/^[1][3,4,5,8][0-9]{9}$/";
-		if($_POST['mobile']!=""&&preg_match($patt,$_POST['mobile'])){
-			$uid = cookie('userid');
-			$userModel = D('user');
-			$data['mobile'] = $_POST['mobile'];
-			$user = $userModel ->data($data)-> where('id='.$uid)->save();
-			if($user){
-				$this->redirect('Home/User/pcenter');
-			}else{
-				$this->redirect('Home/User/pcenter','',1,'手机号已被占用，跳转回用户中心..');
-			}
+	public function changeMobile(){
 
-		}else{
-			$this->redirect('Home/User/pcenter','',1,'手机格式不合法，跳转回用户中心..');
-		}
 	}
 
 	//修改邮箱
-	public function changemail(){
-		$patt = "/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/";
-		if($_POST['email']!=""&&preg_match($patt,$_POST['email'])){
-			$uid = cookie('userid');
-			$userModel = D('user');
-			$data['email'] = $_POST['email'];
-			$user = $userModel ->data($data)-> where('id='.$uid)->save();
-			if($user){
-				$this->redirect('Home/User/pcenter');
-			}else{
-				$this->redirect('Home/User/pcenter','',1,'Email已被占用，跳转回用户中心..');
-			}
-		}else{
-			$this->redirect('Home/User/pcenter','',1,'Email格式不合法，跳转回用户中心..');
-		}
+	public function changEmail(){
+
 	}
 
-
+	
 	//生成验证码方法
 	public function verify(){
 		$Verify = new \Think\Verify();
+		$Verify->reset = true;
 		$Verify->length = 4;
 		$Verify->useNoise = false;
 		$Verify->entry();
@@ -260,7 +375,7 @@ class UserController extends Controller{
 	//验证输入的用户名是否已存在
 	public function checkUidExist(){
 		$userModel = M('user');
-		$username =  I('uid');
+		$username = I('get.uid');
 		$where = array('username'=>"$username");
 		$isExist = $userModel->where($where)->find();
 		if($isExist){
@@ -271,7 +386,7 @@ class UserController extends Controller{
 	//验证输入的邮箱是否已存在
 	public function checkEmailExist(){
 		$userModel = M('user');
-		$email =  I('email');
+		$email = I('get.email');
 		$where = array('email'=>"$email");
 		$isExist = $userModel->where($where)->find();
 		if($isExist){
@@ -282,7 +397,7 @@ class UserController extends Controller{
 	//验证输入的电话是否已存在
 	public function checkMobExist(){
 		$userModel = M('user');
-		$mobile =  I('mobile');
+		$mobile =  I('get.mobile');
 		$where = array('mobile'=>"$mobile");
 		$isExist = $userModel->where($where)->find();
 		if($isExist){
@@ -301,5 +416,11 @@ class UserController extends Controller{
 		}else{
 			echo  0;
 		}
+	}
+
+
+	//注册提交表单时候的Ajax异步验证方法
+	public function checkSubmitReg(){
+		var_dump($_POST);
 	}
 }

@@ -13,7 +13,8 @@
     <script src="__PUBLIC__/js/jquery.min.js"></script>
     <script src="__PUBLIC__/js/amazeui.min.js"></script>
     <script src="__PUBLIC__/js/amazeui.lazyload.min.js"></script>
-    <script src="__PUBLIC__/js/pcenter.js"></script>
+   <script src="__PUBLIC__/js/pcenter.js"></script>
+ 
 </head>
 <body>
 <header class="am-topbar am-topbar-fixed-top am-topbar-inverse">
@@ -35,7 +36,7 @@
         <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
             <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li class="am-active">
-                    <a href="#">
+                    <a href="/">
                         首页
                     </a>
                 </li>
@@ -61,13 +62,26 @@
                 </li>
 				
             </ul>
-			<div class="am-topbar-right">
+<if condition="$Think.cookie.username eq null ">
+ <div class="am-topbar-right">
                 <button class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</button>
             </div>
-		
+    
             <div class="am-topbar-right">
                 <button class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-user"></span> 登录</button>
             </div>
+   
+<else/>
+            <div class="am-topbar-right">
+                <span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><a href="{:U('Home/User/logout')}"><span class="am-icon-power-off"></span>退出</span></a>
+            </div>
+
+            <div class="am-topbar-right">
+                <a href="{:U('Home/User/pcenter')}"><span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-user"></span>欢迎您,<span style="color:orange;font-size:15px;" id="cookieusername">{$Think.cookie.username}</span></span></span></a>
+            </div>
+</if>
+
+			
         </div>
     </div>
 </header>
@@ -75,12 +89,12 @@
   <div style="margin-top:5px;width:70%;margin-right:15%;margin-left:15%;"  data-am-widget="intro"
        class="am-intro am-cf am-intro-default">
 		<h3><i class="am-icon-user-plus"></i>普通用户中心</h3>
-		<img id="imgoo" src="./__PUBLIC__/img/a2.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
+		<img id="imgoo" src="__PUBLIC__/img/a2.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
 		
 		<span id="jiushi6" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
  <i  class="am-icon-wrench"></i>修改头像
 </span>
-	<a> <i  class="am-icon-hand-o-up"></i>申请成为高级用户</a>
+	<a href="/Home/User/upg"> <i  class="am-icon-hand-o-up"></i>申请成为高级用户</a>
 
 		
 
@@ -127,51 +141,31 @@
 <li><i class="am-icon-lock"></i>密码:*******  &nbsp;&nbsp; <span data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
   <i id="jiushi5" class="am-icon-edit"></i>
 </span></li>
-<li><i class="am-icon-clock-o"></i>注册时间:<?php echo date("Y-m-d H:i:s",$user['regtime']); ?> </li>
+<li><i class="am-icon-clock-o"></i>注册时间:{$user['regtime']} </li>
 		</ul>		   
 		
 </div>
       </div>
+
 	  
 	  
 <div class="am-modal am-modal-no-btn" tabindex="-1" id="doc-modal-1">
   <div class="am-modal-dialog">
     <div  class="am-modal-hd">
-      <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
-      
+      <a href="javascript:void();" class="am-close am-close-spin" data-am-modal-close>&times;</a>
     </div>
     <div id="xianshi" class="am-modal-bd">
     </div>
   </div>
 </div>
-<script>
-	function ab(){
-		var patt = /^\w{3,11}$/;
-		if(!patt.test($('#inputName').val())){
-			$('#errVerName').html('用户名位数不对');
-		}else{
-		//利用Ajax实现：验证码是否正确
-			var url = '/index.php/Home/Verify/verifyName/username/'+$('#inputName').val();
-			/*alert(url);*/	
-			$.get(url,function(res){
-				if(res == "1"){
-					$('#errVerName').html('用户名已存在');
-				}else if(res == "0"){
-					$('#pusername').html($('#inputName').val());
-				}				
-			});
-		}
-	}
-</script>
 
 <!-- action ="{:U('User/changename/')}" -->
 <div style="display:none" id="biaodan2">
 <form     method = "post">
 <div style="font-size:16px;margin-bottom:8px;">用户名称修改</div>
-<span >(请输入正确的用户名称)</span>
-<input  type="text" id = "inputName" name="jieshao" value="">
-<div id = "errVerName"></div>
-<input type="button" id = "changeName" onclick="ab()"  value="提交" >
+<span id = "errVerName"></span>
+<input  type="text" id ="username" name="username" value="">
+<input type="button" id = "changename"   value="提交" >
 </form>
 </div>
 
@@ -180,7 +174,7 @@
 <div  style="font-size:16px;margin-bottom:8px;">手机号码修改</div>
 <span>(请输入正确的手机号码)</span>
 <input  type="text" name="mobile" value="">
-<input type="submit" value="提交" value="提交">
+<input type="submit" value="提交"  value="提交">
 </form>
 </div>
 
@@ -197,7 +191,7 @@
 <form action="http://www.baidu.com" method="post">
 <div  style="font-size:16px;margin-bottom:8px;">居住地修改</div>
 <span>(请输入正确的居住地)</span>
-<input  type="text" name="jieshao" value="">
+<input  type="text" name="location" value="">
 <input type="submit" value="提交" value="提交">
 </form>
 </div>
@@ -220,15 +214,20 @@
  </div>
 
  <script>
- $('#jianshao').click(function(){
-		var html=$('#biaodan1').html();
-		$('#xianshi').html(html);
- });
  
  
   $('#jiushi1').click(function(){
   var html=$('#biaodan2').html();
 		$('#xianshi').html(html);
+            $('#username').blur(function(){
+                   checkUser(this);
+             });
+            $('#changename').click(function(){
+                    updateUser($('#username')[0]);
+            });
+            $('.am-close-spin').click(function(){
+                window.location.reload();
+            })
  });
  
  

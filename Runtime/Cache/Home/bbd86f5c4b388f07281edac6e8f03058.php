@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="/Public/css/amazeui.min.css">
     <link rel="stylesheet" href="/Public/css/petshow.css?6">
-	<link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <script src="/Public/js/jquery.min.js"></script>
     <script src="/Public/js/amazeui.min.js"></script>
     <script src="/Public/js/amazeui.lazyload.min.js"></script>
@@ -39,7 +39,7 @@
         <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
             <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li class="am-active">
-                    <a href="#">
+                    <a href="/">
                         首页
                     </a>
                 </li>
@@ -65,12 +65,12 @@
                 </li>
 				
             </ul>
-			<div class="am-topbar-right">
-                <button class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</button>
+	<div class="am-topbar-right">
+                <a href="<?php echo U('Home/User/register');?>"><span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</span></a>
             </div>
 
             <div class="am-topbar-right">
-                <button class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-user"></span> 登录</button>
+                <a href="<?php echo U('Home/User/login');?>"><span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-user"></span> 登录</span></a>
             </div>
         </div>
     </div>
@@ -109,51 +109,56 @@ body{
 <div class="container">
             <div class="row row-centered">
                 <div class="well col-md-6 col-centered">
-                    <h2 style="text-align:center">欢迎注册</h2>
+                    <h3 style="text-align:center">农牧大家评-注册中心</h3>
 					
-                    <!-- <form id="formReg" action="<?php echo U('User/register');?>" method="post" role="form"> -->
-                     <form id="formReg"  role="form">
+                    <form id="formReg" action="<?php echo U('Home/User/register');?>" method="post" 
+                    role="form">
                         <div class="input-group input-group-md">
                             <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-user" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" id="userid" name="userid" placeholder="请输入用户名称"/>
                             <br>
-                            <div id = "errUid"></div>
+                            
                         </div>
+                        <div id = "errUid"></div>
                         
                         <div class="input-group input-group-md">
                             <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
                             <input type="password" class="form-control" id="password" name="password" placeholder="请输入密码"/>
                             <br>
-                            <div id = "errPass"></div>
                         </div>
+                        <div id = "errPass"></div>
                         <div class="input-group input-group-md">
                             <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
-                            <input type="password" class="form-control" id="rePassword" name="rePassword" placeholder="请确认密码"/>
+                            <input type="password" class="form-control" id="rePassword" name="rePassword" placeholder="请输入确认密码"/>
                             <br>
-                            <div id = "errPass2"></div>
                         </div>
+                        <div id = "errPass2"></div>
 						<div class="input-group input-group-md">
-                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
+                            <span class="input-group-addon" id="sizing-addon1"><i class=" glyphicon glyphicon-envelope"></i></span>
                             <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱"/>
                             <br>
-                            <div id = "errEmail"></div>
                         </div>
+                            <div id = "errEmail"></div>
 						<div class="input-group input-group-md">
-                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
+                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-phone"></i></span>
                             <input type="text" class="form-control" id="mobile" name="mobile" placeholder="请输入电话号码 "/>
                             <br>
-                            <div id = "errMob"></div>
+                           
                         </div>
+                         <div id = "errMob"></div>
 						
 						<div class="input-group input-group-md">
-                            <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
+                            <span class="input-group-addon" id="sizing-addon1"><i class=" glyphicon glyphicon-info-sign"></i></span>
                             <input style="width:110px" type="text" class="form-control" id="verifyCode" name="verifyCode" placeholder="请输入验证码"/>
-							<img id = "verifyImg"  style="margin-left:5px" width=80px height=33px src="<?php echo U('verify');?>">
+							<img id = "verifyImg"  style="margin-left:5px" width="80px" height="33px" src="<?php echo U('Home/User/verify');?>" 
+                            onclick="this.src='<?php echo U('Home/User/verify');?>?'+Math.random()"  alt="看不清,点击刷新"  />
+
                             <br>
-                            <div id = "errVer"></div>
+                         
 						</div>
+                           <div id = "errVer"></div>
                         <br/>
-                        <button type="button" id="submits" class="btn btn-success btn-block">登录</button>
+                        <button type="submit" id="submits" class="btn btn-success btn-block">注册</button>
                     </form>
                 </div>
             </div>

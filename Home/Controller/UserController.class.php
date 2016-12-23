@@ -8,7 +8,6 @@ class UserController extends Controller{
 	//
 	//static $isVerify = 0;
 	public function Login(){
-
 		if(cookie('username')){
 			$userModel = D('user');
 			$username=cookie('username');
@@ -17,8 +16,8 @@ class UserController extends Controller{
 					$this->redirect('Home/User/pcenter');
 				}else if($user['role']==1){
 					//如果role==1进入到高级用户中心
-					$this->redirect('Home/User/gcenter');
-				}
+				$this->redirect('Home/User/gcenter');
+			}
 		}
 		if(empty($_POST)){
 			$this->display();
@@ -243,6 +242,8 @@ class UserController extends Controller{
 		$Page -> setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
 		$show= $Page->show();
 
+		
+		//获取文章
 		$article=D('article')->field('id,title,pubtime,uid')->where("uid=$user[id]")->order('pubtime desc')->limit($Page->firstRow.','.$Page->listRows)->select();
 		foreach ($article as $key => $value) {
 			static $a=1;
@@ -254,8 +255,37 @@ class UserController extends Controller{
 			$article[$key]['shunxu']=$a+($p-1)*6;
 			$a++;
 		}
-		
 		unset($a);
+
+		//取出图片
+		$matches=array();
+		//取出所有文章中的所有图片地址
+		$article1=D('article')->field('id,title,content,pubtime,uid')->where("uid=$user[id]")->order('pubtime desc')->select();
+		foreach ($article1 as $key1 => $value1) {
+			$patten="/(href|src)=([\"|']?)([^\"'>]+.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG))/i";
+			preg_match_all($patten,$article1[$key1]['content'],$matches[]);
+			$article1[$key1]['pubtime']=date('Y/m/d H:i:s',$value1['pubtime']);
+		}
+
+		$arr=array();
+		foreach ($matches as $key1 => $value1) {
+			foreach ($value1 as $key2 => $value2) {
+				foreach ($value2 as $key3 => $value3) {
+					if (strlen($value3)>15) {
+						if(substr($value3,0,4)=='src='){
+							$value2[$key3]=substr($value3,5);
+						}
+						$arr[]=$value2[$key3];
+					}
+				}
+			}
+		}
+		$arr=array_unique($arr);
+		$this->assign('arr',$arr);
+		$arrcount=count($arr);
+		$this->assign('arrcount',$arrcount);
+		//end
+
 		$this->assign('show',$show);
 		$this->assign('article',$article);
 		$this->assign('count',$count);
@@ -298,6 +328,82 @@ class UserController extends Controller{
 	      	echo  0;
 	      }
 	}
+
+	//修改头像
+	public function editIcon(){
+
+		//tp中上传代码,仅供
+	 //  $upload=new \Think\Upload();
+  //            $upload->exts = array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+  //            $upload->rootPath = './Public/up/'; // 设置附件上传根目录
+  //            $info = $upload->upload();
+  //            if ($info) {
+  //                $_POST['goods_img']="/Public/up/".$info['goods_img']['savepath'].$info['goods_img']['savename'];
+  //                $thumb_img = new \Think\Image();
+  //                $thumb_img->open('.'.$_POST['goods_img']);
+  //                $thump_path="./Public/up/thumb/".$info['goods_img']['savename'];
+  //                $thumb_img->thumb(230,230)->save($thump_path);
+  //                $_POST['thumb_img']=$thump_path;
+  //            }else{
+  //               echo '图片上传失败';
+  //            }
+		// //当前是谁上传的头像
+		$username=cookie('username');
+		//获取上传的图片
+		$icon=$_FILES['icon']['tmp_name'];
+		//创建上传的图片的文件夹/Public/upload/icon/20161212
+		$dirname="./Public/upload/icon/".date('Ym',time());
+		//如果没有就重新创建
+		if(!is_dir($dirname)) {
+    			mkdir($dirname, 0777, true);
+		}
+		//上传图片的唯一名字id
+		$name1=$this->oneymd();
+		$name2=$this->oneymd();
+		//上传图片的路径
+		$imgurl1=$dirname.'/'.$name1.'_300x300.jpg';
+		$imgurl2=$dirname.'/'.$name2.'_50x50.jpg';
+		$thumb_img = new \Think\Image();
+		$thumb_img->open($icon);
+		$thump_path1=$imgurl1;
+		$thump_path2=$imgurl2;
+		$res1=$thumb_img->thumb(300,300)->save($thump_path1);
+		$res2=$thumb_img->thumb(50,50)->save($thump_path2);
+		if($res1&&$res2){
+		    $user=D('user');
+		    $user->where("username='$username'")->find();
+		    //删除之前此用户上传的头像,节约空间
+		    if(file_exists('.'.$user->icon)){
+		    	unlink('.'.$user->icon);
+		    }
+		    if(file_exists('.'.$user->bicon)){
+		    	unlink('.'.$user->bicon);
+		    }
+		    //去掉头片的空格,thinkphp中的bug
+		     $imgurl1=ltrim($imgurl1, ".");
+		     $imgurl2=ltrim($imgurl2, ".");
+		      	//保存头像地址到user表中
+		    	$res=$user->where("username='$username'")->save(['icon'=>$imgurl2,'bicon'=>$imgurl1]);
+		    	if($res){
+		    		//如果保存成功,返回头片路径,
+		    		$data=array('imgurl'=>$imgurl1);
+		    	}else{
+		    		$data["error"] = "error";
+		     	}
+		   
+		}else{
+		    $data["error"] = "error";
+		}
+		//ajax告诉前端上传成功,并传图像地址
+		echo json_encode($data);
+	}
+	
+	//生成一个不重复的名字
+	public  function  oneymd() {
+
+	return (date('d')) . str_pad((time() - strtotime(date('Y-m-d'))), 5, 0, STR_PAD_LEFT) . substr(microtime(), 2, 6) . sprintf('%03d', rand(0, 999));
+
+	}	
 
 	//验证自我介绍是否合法
 	public function checkIntro($intro){

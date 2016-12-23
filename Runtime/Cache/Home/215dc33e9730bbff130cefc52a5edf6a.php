@@ -38,7 +38,7 @@
         <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
             <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li class="am-active">
-                    <a href="Home/Index/index">
+                    <a href="/">
                         首页
                     </a>
                 </li>
@@ -85,29 +85,32 @@
 </header>
 
 <div style="margin-top:20px;width:70%;margin-left:15%;margin-right:15%;" data-am-widget="paragraph"
-           class="am-paragraph am-paragraph-default"
-           
-           data-am-paragraph="{ tableScrollable: true, pureview: true}">
- <h3><i class="am-icon-user-plus"></i>农牧人<span style="color:red;"><?php echo ($guser['username']); ?></span>的领地</h3> 
-<img  id="imgoo" src="/Public/img/a2.jpg" style="display:inline-block;width:80px;height:80px;" alt="头像" class="am-img-thumbnail am-circle"/>
+           class="am-paragraph am-paragraph-default">
 
+ <h3><i class="am-icon-user-plus"></i>农牧人<span style="color:red;"><?php echo ($guser['username']); ?></span>的领地</h3> 
+<span data-am-widget="gallery" data-am-gallery="{ pureview: true }">
+<?php if($guser['icon'] == null): ?><img id="imgoo" src="/Public/img/zhenxiang.jpg" style="display:inline-block;width:80px;height:80px;" alt="头像" class="am-img-thumbnail am-circle">
+    <?php else: ?>
+    <img id="imgoo" src="<?php echo ($guser['bicon']); ?>" style="display:inline-block;width:80px;height:80px;" alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>
+</span>
 <span style="font-size:18px;margin-left:1%">
 <i class="am-icon-thumbs-o-up"></i><?php echo ($zan); ?>人赞</span>
 
-<span style="font-size:18px;margin-left:1%">
-<i class="am-icon-eye"></i>126次查看</span>
 
 <span style="font-size:18px;margin-left:1%">
-<i class="am-icon-comments"></i>136条评论 </span>
+<i class="am-icon-comments"></i>
+<span class="ds-thread-count" data-thread-key="<?php echo ($guser['uid']); ?>"></span> 
+</span>
 
 <span style="font-size:18px;margin-left:1%">
 <i class="am-icon-book"></i><?php echo ($count); ?>篇文章</span>
 
 <span style="font-size:18px;margin-left:1%">
-<i class="am-icon-image"></i>39张图片</span>
+<i class="am-icon-image"></i><?php echo ($arrcount); ?>张图片</span>
 
 <span style="font-size:18px;margin-left:1%">
-<i class="am-icon-clock-o"></i>注册时间:<?php echo ($guser['regtime']); ?></span>
+<i class="am-icon-clock-o"></i>注册时间:<?php echo ($guser['regtime']); ?>
+</span>
   
   
 
@@ -122,7 +125,7 @@
       <ul class="am-tabs-nav am-cf">
           <li class="am-active"><a href="[data-tab-panel-0]"><i class="am-icon-user"></i>自我介绍</a></li>
 		  <li class=""><a href="[data-tab-panel-1]"><i class="am-icon-file"></i>文章</a></li>
-          <li class=""><a href="[data-tab-panel-2]"><i class="am-icon-picture-o"></i>图片</a></li>
+          <li class=""><a id="ooo"  href="[data-tab-panel-2]"><i class="am-icon-picture-o"></i>图片</a></li>
       </ul>
 	  
       <div class="am-tabs-bd">
@@ -133,8 +136,10 @@
       </div>
  
 		  
-       <div data-tab-panel-1 class="am-tab-panel ">
+       <div style="margin:20px;" data-tab-panel-1 class="am-tab-panel ">
 								<div class="am-scrollable-horizontal">
+<?php if($article == null): ?><span style="margin-top:10px;color:red"><?php echo ($guser['username']); ?></span>暂未发表文章
+<?php else: ?>
  <table style="text-align:center;margin-top:20px;" class="am-table am-table-bordered am-table-striped am-text-nowrap">
 	 <tr>
 	  <th style="text-align:center;"><i class="am-icon-tag"></i>序号</th> 
@@ -146,95 +151,34 @@
 		<td style="text-align:left;"><a href="<?php echo U('Home/Publish/articleShow',array('aid'=>$ax['id']));?>"><?php echo ($ax['title']); ?></a></td> 
 		<td><?php echo ($ax['pubtime']); ?></td>
 	</tr><?php endforeach; endif; ?>
-  </table>
+  </table><?php endif; ?>
   <?php echo ($show); ?>
-								</div>
+							</div>
 		  </div>
-          <div data-tab-panel-2 class="am-tab-panel ">
-										<ul data-am-widget="gallery" class="am-gallery am-avg-sm-2
+<div   data-tab-panel-2 class="am-tab-panel ">
+		<ul id="arrox" data-am-widget="gallery" class="am-gallery am-avg-sm-2
 							  am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }" >
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-1.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg"  alt="远方 有一个地方 那里种有我们的梦想"/>
-											<h3 class="am-gallery-title">远方 有一个地方 那里种有我们的梦想</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-2.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-2.jpg"  alt="某天 也许会相遇 相遇在这个好地方"/>
-											<h3 class="am-gallery-title">某天 也许会相遇 相遇在这个好地方</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-3.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-3.jpg"  alt="不要太担心 只因为我相信"/>
-											<h3 class="am-gallery-title">不要太担心 只因为我相信</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
-								   <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
-								   <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
-								   <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-									</div>
-								  </li>
+<?php if(is_array($arr)): foreach($arr as $key=>$arro): ?><li>
+	<div class="am-gallery-item">
+		<a href=<?php echo ($arro); ?>>
+		  <img style="height:20%" class="am_img animated" src="/Public/img/loading.gif"  alt="远方 有一个地方 那里有我们的梦想"
+data-original="<?php echo ($arro); ?>" data-rel="<?php echo ($arro); ?>" />		</a>
+	</div>
+  </li><?php endforeach; endif; ?>								
 								  
-							  </ul>
-							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin"></i>---->
+				   </ul>
+							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin"></i>
 							  <span><i  class="am-icon-refresh"></i>获取更多图片</span>
-							  <i class="am-icon-spinner am-icon-spin"></i>图片正在获取中......
+							  <i class="am-icon-spinner am-icon-spin"></i>图片正在获取中......---->
 							  
 		  </div>
 		 
 </div>
-	  
+
+
+</div>
+
+
 
 
 <!-- 多说评论框 start -->
@@ -242,6 +186,11 @@
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
+$('#ooo').click(function(){
+    $("html,body").animate({scrollTop:Math.random()*10},1000);
+});
+var width=$('#arrox img').eq(0).width();
+$('#arrox img').css('height',width/1.5);
 var duoshuoQuery = {short_name:"inongmu"};
 	(function() {
 		var ds = document.createElement('script');
@@ -251,60 +200,11 @@ var duoshuoQuery = {short_name:"inongmu"};
 		(document.getElementsByTagName('head')[0] 
 		 || document.getElementsByTagName('body')[0]).appendChild(ds);
 	})();
+
 </script>
 <!-- 多说公共JS代码 end -->
 
-
-<div  class="am_tuya_cai">
-<div class="am_tuya_cai_ti">猜你喜欢</div>
-<div class="am-g am-imglist">
-    <ul data-am-widget="gallery" class="am-gallery am-avg-sm-2
-  am-avg-md-3 am-avg-lg-4 am-gallery-default" >
-  <li>
-    <div class="am-gallery-item am_list_block">
-      <a href="###" class="am_img_bg">
-        <img class="am_img animated" src="/Public/img/loading.gif"    data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg" alt="远方 有一个地方 那里种有我们的梦想"/>
-              </a>
-
-    </div>
-    <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="/Public/img/tx.jpg" alt=""></span><span class="am_imglist_user_font">路见不平Eason吼</span></a>
-  </li>
-    <li>
-    <div class="am-gallery-item am_list_block">
-      <a href="###" class="am_img_bg">
-        <img class="am_img animated" src="/Public/img/loading.gif"    data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg" alt="远方 有一个地方 那里种有我们的梦想"/>
-              </a>
-
-    </div>
-    <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="/Public/img/tx.jpg" alt=""></span><span class="am_imglist_user_font">路见不平Eason吼</span></a>
-  </li>
-    <li>
-    <div class="am-gallery-item am_list_block">
-      <a href="###" class="am_img_bg">
-        <img class="am_img animated" src="/Public/img/loading.gif"    data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg" alt="远方 有一个地方 那里种有我们的梦想"/>
-              </a>
-
-    </div>
-    <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="/Public/img/tx.jpg" alt=""></span><span class="am_imglist_user_font">路见不平Eason吼</span></a>
-  </li>
-    <li>
-    <div class="am-gallery-item am_list_block">
-      <a href="###" class="am_img_bg">
-        <img class="am_img animated" src="/Public/img/loading.gif"    data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg" alt="远方 有一个地方 那里种有我们的梦想"/>
-              </a>
-
-    </div>
-    <a class="am_imglist_user"><span class="am_imglist_user_ico"><img src="/Public/img/tx.jpg" alt=""></span><span class="am_imglist_user_font">路见不平Eason吼</span></a>
-  </li>
-</ul>
-<div class="am_tuya_ckgd"><i class="am-icon-spinner am-icon-spin"></i><a href=""> 查看更多</a></div>
 </div>
-
-
-</div>
-
-</div>
-
 
 
 <footer  class="am_footer">
@@ -348,7 +248,7 @@ var duoshuoQuery = {short_name:"inongmu"};
     </div>
     <div class="am_info_line">Copyright(c)2016 <span>nongmushow</span> All Rights Reserved</div>
 </footer>
-
+<script src="/Public/js/petshow.js"></script>
 
 </body>
 </html>

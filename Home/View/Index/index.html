@@ -109,16 +109,32 @@
     <foreach name='data' item='v'>
         <li>
             <div class="am-gallery-item am_list_block">
-                <a href="{:U('Home/Guser/index/',array('uid'=>$v['uid']))}" class="am_img_bg">
+            
+           <if condition="$v['pic'] eq null">
+           	<a href="{:U('Home/Guser/index/',array('uid'=>$v['uid']))}" class="am_img_bg">
                     <img class="am_img animated" src="__PUBLIC__/img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
+                         data-original="__PUBLIC__/img/zhenxiang.jpg"
                          alt="远方 有一个地方 那里种有我们的梦想"/>
                 </a>
 
+           <else/>
+                <a href="{:U('Home/Guser/index/',array('uid'=>$v['uid']))}" class="am_img_bg">
+                    <img class="am_img animated" src="__PUBLIC__/img/loading.gif"
+                         data-original="{$v['pic']}"
+                         alt="远方 有一个地方 那里种有我们的梦想"/>
+                </a>
+           </if>
                 <div class="am_listimg_info"><a href="javascript:void(0);" title="点我点我" onclick="finger({$v['uid']});"><span class="am-icon-heart" id="finger{$v['uid']}" >{$v['zan']}</span></a>
-                <span class="am-icon-comments"> 67</span></div>
+                <span class="am-icon-book">&nbsp;{$v['article']}</span>
+                <span class="am-icon-image">&nbsp;{$v['tupian']}</span></div>
             </div>
-            <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico"><img src="__PUBLIC__/img/tx.jpg" alt=""></span><span
+            <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico">
+            <if condition="$v['icon'] eq null" >
+    <img id="imgoo" src="/Public/img/zhenxiang.jpg" alt="头像" class="am-img-thumbnail am-circle">
+    <else/>
+    <img id="imgoo" src="{$v['icon']}"  alt="头像" class="am-img-thumbnail am-circle">
+    </if>
+            </span><span
             class="am_imglist_user_font">{$v['username']}</span></a>
         </li>
     </foreach>

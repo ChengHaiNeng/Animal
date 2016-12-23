@@ -156,11 +156,14 @@ class PublishController extends Controller{
 		$_POST['uid'] =$user['id'];
 		
 		$zanModel->create();
+		
 		//判断是否接受到数据
+		//并且一天之内只能进行一次点赞
+		$time=strtotime(date("Y-m-d"));
 		if ($_POST['buid']) {
 			$buid = $_POST['buid'];
 			$uid = $_POST['uid'];
-			if ($zanModel->where("uid='$uid' AND buid=$buid")->select()){
+			if ($zanModel->where("uid=$uid and buid=$buid and time>$time")->select()){
 				return;
 			}
 		}
@@ -168,7 +171,7 @@ class PublishController extends Controller{
 		if ($_POST['aid']) {
 			$aid = $_POST['aid'];
 			$uid = $_POST['uid'];
-			if ($zanModel->where("uid='$uid' AND aid=$aid")->select()){
+			if ($zanModel->where("uid=$uid and aid=$auid and time>$time")->select()){
 				return;
 			}
 		}

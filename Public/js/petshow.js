@@ -61,7 +61,7 @@ $('.am_imglist_user_font').each(
   $("img.am_img").lazyload();
   $("a.am_img_bg").lazyload({
   effect : 'fadeIn'
-});
+	});
 
 //@首页 数字跳动
   var options = {
@@ -72,7 +72,7 @@ $('.am_imglist_user_font').each(
   prefix : '',
   suffix : ''
 };
-var banner_num = new CountUp("banner_num", 1200, 1210, 0, 5, options);
+var banner_num = new CountUp("banner_num",555,666, 0, 5, options);
 banner_num.start();
 });
 

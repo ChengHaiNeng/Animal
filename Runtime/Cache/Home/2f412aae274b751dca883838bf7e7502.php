@@ -106,16 +106,28 @@
   am-avg-md-3 am-avg-lg-6 am-gallery-default">
     <?php if(is_array($data)): foreach($data as $key=>$v): ?><li>
             <div class="am-gallery-item am_list_block">
-                <a href="<?php echo U('Home/Guser/index/',array('uid'=>$v['uid']));?>" class="am_img_bg">
+            
+           <?php if($v['pic'] == null): ?><a href="<?php echo U('Home/Guser/index/',array('uid'=>$v['uid']));?>" class="am_img_bg">
                     <img class="am_img animated" src="/Public/img/loading.gif"
-                         data-original="http://img.petshow.cc/pet_show/2015_08/6d3c22171da582f569702bad45d9a4c6.jpg"
+                         data-original="/Public/img/zhenxiang.jpg"
                          alt="远方 有一个地方 那里种有我们的梦想"/>
                 </a>
 
+           <?php else: ?>
+                <a href="<?php echo U('Home/Guser/index/',array('uid'=>$v['uid']));?>" class="am_img_bg">
+                    <img class="am_img animated" src="/Public/img/loading.gif"
+                         data-original="<?php echo ($v['pic']); ?>"
+                         alt="远方 有一个地方 那里种有我们的梦想"/>
+                </a><?php endif; ?>
                 <div class="am_listimg_info"><a href="javascript:void(0);" title="点我点我" onclick="finger(<?php echo ($v['uid']); ?>);"><span class="am-icon-heart" id="finger<?php echo ($v['uid']); ?>" ><?php echo ($v['zan']); ?></span></a>
-                <span class="am-icon-comments"> 67</span></div>
+                <span class="am-icon-book">&nbsp;<?php echo ($v['article']); ?></span>
+                <span class="am-icon-image">&nbsp;<?php echo ($v['tupian']); ?></span></div>
             </div>
-            <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico"><img src="/Public/img/tx.jpg" alt=""></span><span
+            <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico">
+            <?php if($v['icon'] == null): ?><img id="imgoo" src="/Public/img/zhenxiang.jpg" alt="头像" class="am-img-thumbnail am-circle">
+    <?php else: ?>
+    <img id="imgoo" src="<?php echo ($v['icon']); ?>"  alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>
+            </span><span
             class="am_imglist_user_font"><?php echo ($v['username']); ?></span></a>
         </li><?php endforeach; endif; ?>
     </ul>

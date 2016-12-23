@@ -14,6 +14,7 @@
     <script src="/Public/js/amazeui.min.js"></script>
     <script src="/Public/js/amazeui.lazyload.min.js"></script>
    <script src="/Public/js/pcenter.js"></script>
+   <script src="/Public/js/upload.js"></script>
 </head>
 <body>
 <header class="am-topbar am-topbar-fixed-top am-topbar-inverse">
@@ -84,8 +85,11 @@
   <div style="margin-top:5px;width:70%;margin-right:15%;margin-left:15%;"  data-am-widget="intro"
        class="am-intro am-cf am-intro-default">
 		<h3><i class="am-icon-user-plus"></i>高级用户中心</h3>
-		<img id="imgoo" src="/Public/img/a2.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
-		
+<span data-am-widget="gallery" data-am-gallery="{ pureview: true }">
+<?php if($user['icon'] == null): ?><img id="imgoo" src="/Public/img/zhenxiang.jpg" style="display:inline-block;width:80px;height:80px;" alt="头像" class="am-img-thumbnail am-circle">
+    <?php else: ?>
+    <img id="imgoo" src="<?php echo ($user['bicon']); ?>" style="display:inline-block;width:80px;height:80px;" alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>
+</span>
 		<span id="jiushi6" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
  <i  class="am-icon-wrench"></i>修改头像
 </span>
@@ -93,14 +97,32 @@
 		<span style="margin-left:5%;">
 					  <span><i class="am-icon-user"></i><span id="xusername"><?php echo ($user['username']); ?></span></span>&nbsp;
 					  <span><i class="am-icon-thumbs-o-up"></i><span><?php echo ($zan); ?>人喜欢</span></span>&nbsp;
-					  <span><i class="am-icon-comments"></i><span>6 条评论</span></span>&nbsp;
+					  <span><i class="am-icon-comments"></i><span>
+					  <span class="ds-thread-count" data-thread-key="<?php echo ($user['id']); ?>"></span></span></span>&nbsp;
 					  <span><i class="am-icon-book"></i><span><?php echo ($count); ?>篇文章</span></span>&nbsp;
-					  <span><i class="am-icon-image"></i><span>20张图片 </span></span>&nbsp;
-					  <span><i class="am-icon-eye"></i><span>126 次查看</span></span>&nbsp;
+					  <span><i class="am-icon-image"></i><span><?php echo ($arrcount); ?>张图片 </span></span>&nbsp;
+					 
 					 <span><i class="am-icon-clock-o"></i><span>注册时间:<?php echo ($user['regtime']); ?></span></span>
 		</span>	
 
-		
+<!-- 多说评论框 start -->
+	<div style="display:none" class="ds-thread" data-thread-key="<?php echo ($guser['uid']); ?>" data-title="<?php echo ($guser['user']); ?>" data-url="Home/Guser/index/uid/<?php echo ($guser['uid']); ?>"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"inongmu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+
+</script>
+<!-- 多说公共JS代码 end -->		
 
   </div>
   
@@ -116,7 +138,7 @@
       <ul class="am-tabs-nav am-cf">
           <li class="am-active"><a href="[data-tab-panel-0]"><i class="am-icon-user"></i>自我介绍</a></li>
 		  <li class=""><a href="[data-tab-panel-1]"><i class="am-icon-file"></i>文章</a></li>
-          <li class=""><a href="[data-tab-panel-2]"><i class="am-icon-picture-o"></i>图片</a></li>
+          <li id="ooo" class=""><a href="[data-tab-panel-2]"><i class="am-icon-picture-o"></i>图片</a></li>
 		  <li class=""><a href="[data-tab-panel-3]"><i class="am-icon-picture-o"></i>用户信息</a></li>
       </ul>
 	  
@@ -168,99 +190,32 @@
 </div>
 		  </div>
           <div data-tab-panel-2 class="am-tab-panel ">
-		   <a href=""><button style="margin-top:10px;" type="button" class="am-btn am-btn-default"><i class="am-icon-plus"></i>新增图片</button></a>
-										<ul data-am-widget="gallery" class="am-gallery am-avg-sm-2
+		
+	<ul id="arrox" data-am-widget="gallery" class="am-gallery am-avg-sm-2
 							  am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }" >
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-1.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg"  alt="远方 有一个地方 那里种有我们的梦想"/>
-											<h3 class="am-gallery-title">远方 有一个地方 那里种有我们的梦想</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-2.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-2.jpg"  alt="某天 也许会相遇 相遇在这个好地方"/>
-											<h3 class="am-gallery-title">某天 也许会相遇 相遇在这个好地方</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-3.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-3.jpg"  alt="不要太担心 只因为我相信"/>
-											<h3 class="am-gallery-title">不要太担心 只因为我相信</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
-								   <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
-								   <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
-								   <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
-								  <li>
-									<div class="am-gallery-item">
-										<a href="http://s.amazeui.org/media/i/demos/bing-4.jpg" class="">
-										  <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg"  alt="终会走过这条遥远的道路"/>
-											<h3 class="am-gallery-title">终会走过这条遥远的道路</h3>
-											<div class="am-gallery-desc">2375-09-26</div>
-										</a>
-										<a href="">删除</a>
-									</div>
-								  </li>
+<?php if(is_array($arr)): foreach($arr as $key=>$arro): ?><li>
+	<div class="am-gallery-item">
+		<a href=<?php echo ($arro); ?>>
+		  <img style="height:20%" class="am_img animated" src="/Public/img/loading.gif"  alt="远方 有一个地方 那里有我们的梦想"
+data-original="<?php echo ($arro); ?>" data-rel="<?php echo ($arro); ?>" />		</a>
+	</div>
+  </li><?php endforeach; endif; ?>								
 								  
-							  </ul>
-							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin"></i>---->
+	</ul>
+							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin"></i>--
 							  <span><i  class="am-icon-refresh"></i>获取更多图片</span>
-							  <i class="am-icon-spinner am-icon-spin"></i>图片正在获取中......
+							  <i class="am-icon-spinner am-icon-spin"></i>图片正在获取中......-->
 							  
 		  </div>
 		  <div data-tab-panel-3 class="am-tab-panel ">
 		   
-		   
+<script>
+$('#ooo').click(function(){
+    $("html,body").animate({scrollTop:Math.random()*10},0.1);
+});
+var width=$('#arrox img').eq(0).width();
+$('#arrox img').css('height',width/1.5);
+</script>		   
 		   
 		   
 	       
@@ -363,15 +318,21 @@
 </div>
 
 <div style="display:none" id="biaodan7">
-<form  action="http://www.baidu.com" method="post" enctype="multipart/form-data" >
+<form>
 	<div  style="font-size:16px;margin-bottom:8px;">头像修改</div>
-	<p><input type="file" name="pic"></p>	
-	<p><input type="submit" value="提交"></p>
+	<input type="file" id="icon" name="icon" size="12" />	
+	<p><input type="button"  id="editicon" value="提交"></p>
 	</form>
 </div>
  
 
  <script>
+ $('#ooo').click(function(){
+    $("html,body").animate({scrollTop:Math.random()*10},1000);
+});
+var width=$('#arrox img').eq(0).width();
+$('#arrox img').css('height',width/1.5);
+
  $('#jianshao').click(function(){
 		var html=$('#biaodan1').html();
 		$('#xianshi').html(html);
@@ -419,6 +380,11 @@
  $('#jiushi6').click(function(){
 		var html=$('#biaodan7').html();
 		$('#xianshi').html(html);
+
+	            $("#editicon").click(function () {
+	                	ajaxFileUpload();
+	            })
+
  });
  
  </script>
@@ -478,5 +444,6 @@
     </div>
     <div class="am_info_line">Copyright(c)2016 <span>nongmushow</span> All Rights Reserved</div>
 </footer>
+<script src="/Public/js/petshow.js"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 function finger(buid=null,aid=null){
   //如果没有cookie就没有登陆说明没登陆跳转到登陆页面
   if (!getCookie('username')) {
-    location.href = "Home/User/login";
+    location.href = "/Home/User/login";
     return;
   }
   //当点击赞的时候触发post ajax
-  $.post("Home/Publish/dianzan",{ "buid": buid,"aid" : aid},function(data){
+  $.post("/Home/Publish/dianzan",{ "buid": buid,"aid" : aid},function(data){
     if(data.indexOf("ok") == -1){
       alert('您已点过赞了');
     }else{

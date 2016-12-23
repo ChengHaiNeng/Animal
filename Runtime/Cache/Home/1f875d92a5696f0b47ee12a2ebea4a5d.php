@@ -30,7 +30,7 @@
         <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
             <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li class="am-active">
-                    <a href="#">
+                    <a href="/">
                         首页
                     </a>
                 </li>
@@ -82,7 +82,9 @@
 					<div style="text-align:center;">
 					<a href="<?php echo U('Home/Guser/index',array('uid'=>$userid));?>"><span>
 					<i class="am-icon-user"></i>&nbsp;<?php echo ($username); ?></span></a>
-					 <span><i class="am-icon-clock-o"></i>&nbsp;发表于<?php echo ($art['pubtime']); ?></span>&nbsp;&nbsp;<span><i class="am-icon-thumbs-o-up"></i>&nbsp;300+</span></div>
+					 <span><i class="am-icon-clock-o"></i>&nbsp;发表于<?php echo ($art['pubtime']); ?></span>
+<span class="ds-thread-count" data-thread-key="<?php echo ($art['id']); ?>"></span>
+					 </div>
 	<hr/>
 	<article  style="width:70%;margin-left:15%;margin-right:15%;" data-am-widget="paragraph"
            class="am-paragraph am-paragraph-default"
@@ -91,7 +93,23 @@
 		   
 		<?php echo ($art['content']); ?>   
                    
-		
+<!-- 多说评论框 start -->
+
+    <div class="ds-thread" data-thread-key="<?php echo ($art['id']); ?>" data-title="<?php echo ($art['title']); ?>" data-url="Home/Publish/articleShow/aid/<?php echo ($art['id']); ?>"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"inongmu"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->		
   </article>			
 
 

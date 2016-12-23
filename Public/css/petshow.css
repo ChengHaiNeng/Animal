@@ -67,7 +67,7 @@ ul.am-dropdown-content>li>a:focus, ul.am-dropdown-content>li>a:hover { backgroun
 .am_imglist_user { color: #b7b7b7; padding: 10px 0; display: block;}
 .am_imglist_user:hover { color: #b7b7b7;}
 .am_imglist_user_ico { display:inline-block;  height: 20px; padding-right: 8px;}
-.am_imglist_user_ico img { width: 20px;height: 20px; border-radius:50%;}
+.am_imglist_user_ico img { width: 30px;height: 30px; border-radius:50%;}
 .am_imglist_user_font { font-size: 12px;}
 .am_img_bg { background: url(../img/loading.gif) no-repeat center; display: block;}
 .am_footer { background: #222324; width: 100%;padding: 35px 0 0 0;}

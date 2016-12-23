@@ -14,6 +14,7 @@
     <script src="/Public/js/amazeui.min.js"></script>
     <script src="/Public/js/amazeui.lazyload.min.js"></script>
    <script src="/Public/js/pcenter.js"></script>
+   <script src="/Public/js/upload.js"></script>
  
 </head>
 <body>
@@ -87,7 +88,9 @@
   <div style="margin-top:5px;width:70%;margin-right:15%;margin-left:15%;"  data-am-widget="intro"
        class="am-intro am-cf am-intro-default">
 		<h3><i class="am-icon-user-plus"></i>普通用户中心</h3>
-		<img id="imgoo" src="/Public/img/a2.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
+	<?php if($user['icon'] == null): ?><img id="imgoo" src="/Public/img/nono.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
+    <?php else: ?>
+    <img id="imgoo" src="<?php echo ($user['icon']); ?>" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>
 		
 		<span id="jiushi6" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
  <i  class="am-icon-wrench"></i>修改头像
@@ -204,12 +207,12 @@
 </div>
 
 <div style="display:none" id="biaodan7">
-<form   action="http://www.baidu.com" method="post" enctype="multipart/form-data" >
-	<div  style="font-size:16px;margin-bottom:8px;">头像修改</div>
-	<p><input type="file" name="pic"></p>	
-	<p><input type="submit" value="提交"></p>
-	</form>
- </div>
+<form>
+  <div  style="font-size:16px;margin-bottom:8px;">头像修改</div>
+  <input type="file" id="icon" name="icon" size="2" />  
+  <p><input type="button"  id="editicon" value="提交"></p>
+  </form>
+</div>
 
  <script>
  
@@ -252,8 +255,13 @@
  });
  
  $('#jiushi6').click(function(){
-		var html=$('#biaodan7').html();
-		$('#xianshi').html(html);
+    var html=$('#biaodan7').html();
+    $('#xianshi').html(html);
+
+              $("#editicon").click(function () {
+                    ajaxFileUpload();
+              })
+
  });
  
  </script>

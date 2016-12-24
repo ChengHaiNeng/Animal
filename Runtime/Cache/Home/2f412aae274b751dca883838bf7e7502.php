@@ -124,6 +124,15 @@
                 <span class="am-icon-image">&nbsp;<?php echo ($v['tupian']); ?></span></div>
             </div>
             <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico">
+            <script language="javascript">
+if (screen.width>800 &&screen.width<1460 ) {
+                $(".am_img").width(180);//此分辨率下你需要的操作
+                $(".am_img").height(180);//此分辨率下你需要的操作
+            }  else {
+                 $(".am_img").width(206);//默认操作
+                $(".am_img").height(206);//默认操作
+            }
+</script>
             <?php if($v['icon'] == null): ?><img id="imgoo"  src="/Public/img/zhenxiang.jpg" alt="头像" class="am-img-thumbnail am-circle">
     <?php else: ?>
     <img id="imgoo" src="<?php echo ($v['icon']); ?>"  alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>

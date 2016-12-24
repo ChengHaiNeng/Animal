@@ -34,7 +34,7 @@
         <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse-5">
             <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li class="am-active">
-                    <a href="#">
+                    <a href="/">
                         首页
                     </a>
                 </li>

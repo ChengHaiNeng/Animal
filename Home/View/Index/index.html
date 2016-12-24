@@ -119,7 +119,7 @@
 
            <else/>
                 <a href="{:U('Home/Guser/index/',array('uid'=>$v['uid']))}" class="am_img_bg">
-                    <img class="am_img animated" src="__PUBLIC__/img/loading.gif"
+                    <img style="width:206px;height:206px;" class="am_img animated" src="__PUBLIC__/img/loading.gif"
                          data-original="{$v['pic']}"
                          alt="远方 有一个地方 那里种有我们的梦想"/>
                 </a>
@@ -130,7 +130,7 @@
             </div>
             <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico">
             <if condition="$v['icon'] eq null" >
-    <img id="imgoo" src="/Public/img/zhenxiang.jpg" alt="头像" class="am-img-thumbnail am-circle">
+    <img id="imgoo"  src="/Public/img/zhenxiang.jpg" alt="头像" class="am-img-thumbnail am-circle">
     <else/>
     <img id="imgoo" src="{$v['icon']}"  alt="头像" class="am-img-thumbnail am-circle">
     </if>

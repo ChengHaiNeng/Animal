@@ -88,9 +88,11 @@
   <div style="margin-top:5px;width:70%;margin-right:15%;margin-left:15%;"  data-am-widget="intro"
        class="am-intro am-cf am-intro-default">
 		<h3><i class="am-icon-user-plus"></i>普通用户中心</h3>
-	<?php if($user['icon'] == null): ?><img id="imgoo" src="/Public/img/nono.jpg" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle">
+<span data-am-widget="gallery" data-am-gallery="{ pureview: true }">
+<?php if($user['icon'] == null): ?><img id="imgoo" src="/Public/img/zhenxiang.jpg" style="display:inline-block;width:80px;height:80px;" alt="头像" class="am-img-thumbnail am-circle">
     <?php else: ?>
-    <img id="imgoo" src="<?php echo ($user['icon']); ?>" style="width:100px;height:100px;" alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>
+    <img id="imgoo" src="<?php echo ($user['bicon']); ?>" style="display:inline-block;width:80px;height:80px;" alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>
+</span>
 		
 		<span id="jiushi6" data-am-modal="{target: '#doc-modal-1', closeViaDimmer: 0, width: 400, height: 225}">
  <i  class="am-icon-wrench"></i>修改头像
@@ -209,7 +211,7 @@
 <div style="display:none" id="biaodan7">
 <form>
   <div  style="font-size:16px;margin-bottom:8px;">头像修改</div>
-  <input type="file" id="icon" name="icon" size="2" />  
+  <input type="file" id="icon" name="icon" size="12" />  
   <p><input type="button"  id="editicon" value="提交"></p>
   </form>
 </div>

@@ -62,6 +62,7 @@
                 </li>
 				
             </ul>
+            
 <?php if($_COOKIE['username']== null ): ?><div class="am-topbar-right">
                 <button class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</button>
             </div>
@@ -97,10 +98,10 @@
 		<span style="margin-left:5%;">
 					  <span><i class="am-icon-user"></i><span id="xusername"><?php echo ($user['username']); ?></span></span>&nbsp;
 					  <span><i class="am-icon-thumbs-o-up"></i><span><?php echo ($zan); ?>人喜欢</span></span>&nbsp;
-					  <span><i class="am-icon-comments"></i><span>
-					  <span class="ds-thread-count" data-thread-key="<?php echo ($user['id']); ?>"></span></span></span>&nbsp;
+					  <!-- <span><i class="am-icon-comments"></i><span>
+            <span class="ds-thread-count" data-thread-key="<?php echo ($user['id']); ?>"></span></span></span>&nbsp; -->
 					  <span><i class="am-icon-book"></i><span><?php echo ($count); ?>篇文章</span></span>&nbsp;
-					  <span><i class="am-icon-image"></i><span><?php echo ($arrcount); ?>张图片 </span></span>&nbsp;
+					  <span><i class="am-icon-image"></i><span><?php echo ($pic_count); ?>张图片 </span></span>&nbsp;
 					 
 					 <span><i class="am-icon-clock-o"></i><span>注册时间:<?php echo ($user['regtime']); ?></span></span>
 		</span>	
@@ -193,13 +194,17 @@ var duoshuoQuery = {short_name:"inongmu"};
 		
 	<ul id="arrox" data-am-widget="gallery" class="am-gallery am-avg-sm-2
 							  am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }" >
+
+
 <?php if(is_array($arr)): foreach($arr as $key=>$arro): ?><li>
 	<div class="am-gallery-item">
 		<a href=<?php echo ($arro); ?>>
 		  <img style="height:20%" class="am_img animated" src="/Public/img/loading.gif"  alt="远方 有一个地方 那里有我们的梦想"
 data-original="<?php echo ($arro); ?>" data-rel="<?php echo ($arro); ?>" />		</a>
 	</div>
-  </li><?php endforeach; endif; ?>								
+  </li><?php endforeach; endif; ?>	
+
+
 								  
 	</ul>
 							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin"></i>--
@@ -337,11 +342,29 @@ $('#arrox img').css('height',width/1.5);
 		var html=$('#biaodan1').html();
 		$('#xianshi').html(html);
 		 $('#changself').click(function(){
-                   		changSelf($('#jieshao')[0]);
+      changSelf($('#jieshao')[0]);
 			return false;
              	});
  });
- 
+
+
+ function changSelf(oo){
+      if(strlen(oo.value)>30 || strlen(oo.value)<10){
+        $('#erojieshao').html('<span style="color:red">长度必须在10到30位之间</span>');
+        return false;
+      }else{
+        $('#erojieshao').html('');
+        var url='/Home/User/updateIntro';
+
+        var data={
+          'self':oo.value
+        };
+        $.post(url,data,function(res){
+          $('#xianshi').html("<span style='color:red'>恭喜您,自我介绍修改成功");
+          $('#gself').html(oo.value);
+        });
+      }
+    }
  
   $('#jiushi1').click(function(){
    var html=$('#biaodan2').html();

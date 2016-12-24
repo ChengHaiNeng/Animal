@@ -51,23 +51,6 @@ function updateUser(oo){
         return len;
     }
 
-//修改用户简介
-function changSelf(oo){
-			if(strlen(oo.value)>30 || strlen(oo.value)<10){
-				$('#erojieshao').html('<span style="color:red">长度必须在10到30位之间</span>');
-				return false;
-			}else{
-				$('#erojieshao').html('');
-				var url='/Home/User/updateIntro';
-				var data={
-					'intro':oo.value
-				};
-				$.post(url,data,function(res){
-					$('#xianshi').html("<span style='color:red'>恭喜您,自我介绍修改成功");
-					$('#gself').html(oo.value);
-				});
-			}
-		}
 
 function ajaxFileUpload() {
             $.ajaxFileUpload (

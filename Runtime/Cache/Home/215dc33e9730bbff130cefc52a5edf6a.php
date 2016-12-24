@@ -13,6 +13,7 @@
     <script src="/Public/js/jquery.min.js"></script>
     <script src="/Public/js/amazeui.min.js"></script>
     <script src="/Public/js/amazeui.lazyload.min.js"></script>
+    <script src="/Public/js/guser.js"></script>
 	
 <link href="http://cdn.ycku.com/wp-content/themes/prowerV5/style.css" rel="stylesheet">
 
@@ -64,6 +65,7 @@
                 </li>
 				
             </ul>
+
 <?php if($_COOKIE['username']== null ): ?><div class="am-topbar-right">
                 <a href="<?php echo U('Home/User/register');?>"><span class="am-btn am-btn-danger am-topbar-btn am-btn-sm"><span class="am-icon-pencil"></span>注册</span></a>
             </div>
@@ -96,36 +98,34 @@
 <span style="font-size:18px;margin-left:1%">
 <i class="am-icon-thumbs-o-up"></i><?php echo ($zan); ?>人赞</span>
 
-
-<span style="font-size:18px;margin-left:1%">
+<input type="hidden" name="hide_uid" value="<?php echo ($uid); ?>" id = "hide_uid">
+<!-- <span style="font-size:18px;margin-left:1%">
 <i class="am-icon-comments"></i>
 <span class="ds-thread-count" data-thread-key="<?php echo ($guser['uid']); ?>"></span> 
-</span>
+</span> -->
 
 <span style="font-size:18px;margin-left:1%">
 <i class="am-icon-book"></i><?php echo ($count); ?>篇文章</span>
 
 <span style="font-size:18px;margin-left:1%">
-<i class="am-icon-image"></i><?php echo ($arrcount); ?>张图片</span>
+<i class="am-icon-image"></i><?php echo ($pic_count); ?>张图片</span>
 
 <span style="font-size:18px;margin-left:1%">
 <i class="am-icon-clock-o"></i>注册时间:<?php echo ($guser['regtime']); ?>
 </span>
+
+
+
   
-  
-
-
-
-
 
 
 
 
 <div style="width:100%;margin-bottom:100px;" data-am-widget="tabs" class="am-tabs am-tabs-default" >
       <ul class="am-tabs-nav am-cf">
-          <li class="am-active"><a href="[data-tab-panel-0]"><i class="am-icon-user"></i>自我介绍</a></li>
-		  <li class=""><a href="[data-tab-panel-1]"><i class="am-icon-file"></i>文章</a></li>
-          <li class=""><a id="ooo"  href="[data-tab-panel-2]"><i class="am-icon-picture-o"></i>图片</a></li>
+          <li class="am-active"><a href="[data-tab-panel-0]" onclick=getme();><i class="am-icon-user"></i>自我介绍</a></li>
+		  <li class=""><a href="[data-tab-panel-1]" onclick=getarticle();><i class="am-icon-file"></i>文章</a></li>
+          <li class=""><a id="ooo"  href="[data-tab-panel-2]" onclick=getpic();><i class="am-icon-picture-o"></i>图片</a></li>
       </ul>
 	  
       <div class="am-tabs-bd">
@@ -158,13 +158,15 @@
 <div   data-tab-panel-2 class="am-tab-panel ">
 		<ul id="arrox" data-am-widget="gallery" class="am-gallery am-avg-sm-2
 							  am-avg-md-3 am-avg-lg-4 am-gallery-default" data-am-gallery="{ pureview: true }" >
-<?php if(is_array($arr)): foreach($arr as $key=>$arro): ?><li>
+<?php if(is_array($arr_pic)): foreach($arr_pic as $key=>$arro): ?><li>
 	<div class="am-gallery-item">
-		<a href=<?php echo ($arro); ?>>
-		  <img style="height:20%" class="am_img animated" src="/Public/img/loading.gif"  alt="远方 有一个地方 那里有我们的梦想"
-data-original="<?php echo ($arro); ?>" data-rel="<?php echo ($arro); ?>" />		</a>
+		<a href=<?php echo ($arro['upload']); ?>>
+		  <img style="height:20%" class="am_img animated" src="/Public/img/loading.gif"  
+data-original="<?php echo ($arro['upload']); ?>" data-rel="<?php echo ($arro['upload']); ?>" />		</a>
 	</div>
-  </li><?php endforeach; endif; ?>								
+  </li>
+
+<!-- '<li><div class="am-gallery-item"><a href="'+pic_url+'"><img style="height:20%" class="am_img animated" src="http://nongmu.com/Public/img/loading.gif" data-original="'+pic_url+'" data-rel="'+pic_url+'" /></a></div></li>' --><?php endforeach; endif; ?>								
 								  
 				   </ul>
 							  <!---如果刷新的话这个会显示正在刷新中<i class="am-icon-spinner am-icon-spin"></i>
@@ -191,6 +193,9 @@ $('#ooo').click(function(){
 });
 var width=$('#arrox img').eq(0).width();
 $('#arrox img').css('height',width/1.5);
+
+
+
 var duoshuoQuery = {short_name:"inongmu"};
 	(function() {
 		var ds = document.createElement('script');

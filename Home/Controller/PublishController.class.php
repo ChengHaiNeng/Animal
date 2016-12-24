@@ -41,13 +41,37 @@ class PublishController extends Controller{
 			//判断是否有提交数据并验证数据是否合格
 			if ($artModel->create(I('post.'),1)){
 				//判断是否成功添加到数据库
-				if ($artModel->add()) {
+				if ($rs = $artModel->add()) {
+					//如果文章上传成功，将图片存到数据库
+					$article = M('article')->find($rs);
+					$content = $article['content'];
+					$patten="/(href|src)=([\"|']?)([^\"'>]+.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG))/i";
+			
+					preg_match_all($patten,$content,$matches);	
+					/*echo '<pre>';
+					print_r($matches);
+					echo '</pre>';*/
+					$userid = cookie('userid');
+					foreach($matches[0] as $v){
+						/*$v = substr($v,5);
+						echo $v;
+						echo '<br>';*/
+						
+						$v = substr($v,5);
+						$data['upload'] = "$v";
+
+						$data['uid'] = $userid;
+						$data['time'] = time();
+						M('pic')->data($data)->add();												
+					}
+
+
 					$this->success('操作成功!!!');
 					exit();	
 				}	
 			}
 			//打印数据错误信息
-			var_dump($artModel->gerError());	 
+			var_dump($artModel->getError());	 
 		}
 	}
 

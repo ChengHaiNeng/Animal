@@ -29,6 +29,7 @@ class UserController extends Controller{
 			$user = $userModel->where($where)->find();
 			if($user['password']==md5($password.C('salt'))){
 				cookie('username',/*md5(C('salt').$*/$username/*)*/,3600*24*7);
+				cookie('userid',/*md5(C('salt').$*/$user['id']/*)*/,3600*24*7);
 				
 				//如果role==0进入到普通用户中心
 				if($user['role']==0){
@@ -241,7 +242,7 @@ class UserController extends Controller{
 		$Page -> setConfig('link','indexpagenumb');//pagenumb 会替换成页码
 		$Page -> setConfig('theme','%HEADER% %FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%');
 		$show= $Page->show();
-
+			
 		
 		//获取文章
 		$article=D('article')->field('id,title,pubtime,uid')->where("uid=$user[id]")->order('pubtime desc')->limit($Page->firstRow.','.$Page->listRows)->select();
@@ -285,6 +286,9 @@ class UserController extends Controller{
 		$arrcount=count($arr);
 		$this->assign('arrcount',$arrcount);
 		//end
+		$uid = cookie('userid');
+		$pic_count = M('pic')->where("uid=$uid")->count();
+		$this->assign('pic_count',$pic_count);
 
 		$this->assign('show',$show);
 		$this->assign('article',$article);
@@ -414,13 +418,15 @@ class UserController extends Controller{
 			}
 	}
 
-	//修改简介
+	
+		//修改简介
 	public function updateIntro(){
-		$intro=I('post.intro');
+		$intro=I('post.self');
 		$this->checkIntro($intro);
 		$username=cookie('username');
-		$userModle=D('user');
-		if ($userModle->where("username='$username'")->save($_POST)) {
+		$user=D('user')->where("username='$username'")->find();
+		$userModle=D('guser');
+		if ($userModle->where("uid=$user[id]")->save(['self'=>$intro])) {
 			echo 1;
 		}else{
 			echo 0;

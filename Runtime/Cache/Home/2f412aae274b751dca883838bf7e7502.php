@@ -115,7 +115,7 @@
 
            <?php else: ?>
                 <a href="<?php echo U('Home/Guser/index/',array('uid'=>$v['uid']));?>" class="am_img_bg">
-                    <img class="am_img animated" src="/Public/img/loading.gif"
+                    <img style="width:206px;height:206px;" class="am_img animated" src="/Public/img/loading.gif"
                          data-original="<?php echo ($v['pic']); ?>"
                          alt="远方 有一个地方 那里种有我们的梦想"/>
                 </a><?php endif; ?>
@@ -124,7 +124,7 @@
                 <span class="am-icon-image">&nbsp;<?php echo ($v['tupian']); ?></span></div>
             </div>
             <a style="display:inline" class="am_imglist_user"><span class="am_imglist_user_ico">
-            <?php if($v['icon'] == null): ?><img id="imgoo" src="/Public/img/zhenxiang.jpg" alt="头像" class="am-img-thumbnail am-circle">
+            <?php if($v['icon'] == null): ?><img id="imgoo"  src="/Public/img/zhenxiang.jpg" alt="头像" class="am-img-thumbnail am-circle">
     <?php else: ?>
     <img id="imgoo" src="<?php echo ($v['icon']); ?>"  alt="头像" class="am-img-thumbnail am-circle"><?php endif; ?>
             </span><span

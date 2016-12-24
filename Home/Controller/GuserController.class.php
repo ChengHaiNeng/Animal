@@ -51,10 +51,12 @@ class GuserController extends Controller{
 		$article1=D('article')->field('id,title,content,pubtime,uid')->where("uid=$user[uid]")->order('pubtime desc')->select();
 		foreach ($article1 as $key1 => $value1) {
 			$patten="/(href|src)=([\"|']?)([^\"'>]+.(jpg|JPG|jpeg|JPEG|gif|GIF|png|PNG))/i";
-			preg_match_all($patten,$article1[$key1]['content'],$matches[]);
+
+			preg_match_all($patten,$article1[$key1]['content'],$matches[]);			
 			$article1[$key1]['pubtime']=date('Y/m/d H:i:s',$value1['pubtime']);
 		}
 
+		//print_r($matches);
 		$arr=array();
 		foreach ($matches as $key1 => $value1) {
 			foreach ($value1 as $key2 => $value2) {
@@ -69,13 +71,24 @@ class GuserController extends Controller{
 			}
 		}
 		$arr=array_unique($arr);
+		//
+		//
+		/*^^^^^^^^这是从pic数据库取出的图片数^^^^^^^*/
+		
+		$arr_pic = M('pic')->where("uid=$uid")->limit(12)->select();
+		/*^^^^^^^^这是从pic数据库取出的图片数^^^^^^^*/
+		$this->assign('arr_pic',$arr_pic);
+
+		$pic_count = M('pic')->where("uid=$uid")->count();
+
 		$this->assign('arr',$arr);
 		$arrcount=count($arr);
 		$this->assign('arrcount',$arrcount);
+		$this->assign('pic_count',$pic_count);
 		//end
 		
 
-		
+		$this->assign('uid',$uid);
 		$this->assign('show',$show);
 		$this->assign('article',$article);
 		$this->assign('count',$count);
@@ -84,8 +97,6 @@ class GuserController extends Controller{
 			$this->redirect('Home/Index/index');
 		}
 		$user['regtime']=date('Y/m/d H:i:s',$user['regtime']);
-
-		
 
 		$this->assign('guser',$user);
 		$this->display('guser');

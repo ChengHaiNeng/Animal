@@ -2,7 +2,7 @@
 namespace Home\Controller;
 use Think\Controller;
 use Think\Verify;
-use JWT;
+use Org\Util\Jwt;
 class UserController extends Controller{
 	//用户登陆
 	//
@@ -31,6 +31,16 @@ class UserController extends Controller{
 				cookie('username',/*md5(C('salt').$*/$username/*)*/,3600*24*7);
 				cookie('userid',/*md5(C('salt').$*/$user['id']/*)*/,3600*24*7);
 				
+
+				define('DUOSHUO_SECRET','a5b4e017c81e70aed46b40ec51dfda76');
+				$token = array(
+				    "short_name"=> "inongmu",
+				    "user_key"=>$user['id'],
+				    "name"=>$user['username']
+				);
+				$duoshuoToken = JWT::encode($token, DUOSHUO_SECRET);
+				cookie('duoshuo_token', $duoshuoToken, 3600*24*7);
+
 				//如果role==0进入到普通用户中心
 				if($user['role']==0){
 					$this->redirect('Home/User/pcenter');
@@ -181,6 +191,7 @@ class UserController extends Controller{
 
 	public function logout(){
 		cookie('username',null);
+		cookie('duoshuo_token',null);
 		$this->redirect('Home/User/login');
 	}
 	//管理员登陆
@@ -326,6 +337,16 @@ class UserController extends Controller{
 	      	$arr=array();
 	      	$arr['username']=$username;
 	      	cookie('username',$username,7*24*3600);
+
+	      		define('DUOSHUO_SECRET','a5b4e017c81e70aed46b40ec51dfda76');
+				$token = array(
+				    "short_name"=> "inongmu",
+				    "user_key"=>cookie('userid'),
+				    "name"=>$username
+				);
+				$duoshuoToken = JWT::encode($token, DUOSHUO_SECRET);
+				cookie('duoshuo_token', $duoshuoToken, 3600*24*7);
+
 
 	      	echo json_encode($arr);
 	      }else{
